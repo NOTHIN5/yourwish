@@ -1,0 +1,538 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --success-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --text-color: #ffffff;
+    --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-gradient);
+    overflow: hidden;
+    position: relative;
+}
+
+/* Animated stars background */
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.stars::before,
+.stars::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    box-shadow:
+        100px 100px white, 200px 150px white, 300px 50px white,
+        400px 200px white, 500px 100px white, 600px 180px white,
+        700px 80px white, 800px 160px white, 50px 250px white,
+        150px 300px white, 250px 280px white, 350px 320px white,
+        450px 260px white, 550px 340px white, 650px 300px white,
+        750px 280px white, 850px 320px white, 120px 400px white,
+        220px 420px white, 320px 380px white, 420px 440px white;
+    animation: twinkle 3s infinite;
+}
+
+.stars::after {
+    animation-delay: 1.5s;
+}
+
+@keyframes twinkle {
+
+    0%,
+    100% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+.container {
+    position: relative;
+    width: 90%;
+    max-width: 600px;
+    perspective: 1000px;
+}
+
+.card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border-radius: 30px;
+    border: 1px solid var(--glass-border);
+    padding: 60px 40px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    animation: fadeInScale 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.heart-icon {
+    font-size: 80px;
+    animation: heartbeat 1.5s infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes heartbeat {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    10%,
+    30% {
+        transform: scale(1.1);
+    }
+
+    20%,
+    40% {
+        transform: scale(0.95);
+    }
+}
+
+.question {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    animation: slideDown 0.8s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.subtitle {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 40px;
+    animation: fadeIn 1s ease-out 0.3s backwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.button-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeIn 1s ease-out 0.5s backwards;
+}
+
+.btn {
+    font-family: 'Poppins', sans-serif;
+    padding: 18px 50px;
+    font-size: 20px;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn span {
+    position: relative;
+    z-index: 1;
+}
+
+.btn-yes {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+}
+
+.btn-yes:hover {
+    transform: scale(1.1) translateY(-3px);
+    box-shadow: 0 8px 25px rgba(245, 87, 108, 0.5);
+}
+
+.btn-no {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-no:hover {
+    transform: scale(0.95);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Celebration Card */
+.celebration-card {
+    display: none;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.celebration-card.show {
+    display: block;
+}
+
+.confetti {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.confetti::before,
+.confetti::after {
+    content: '🎉';
+    position: absolute;
+    font-size: 30px;
+    animation: confettiFall 3s infinite;
+}
+
+.confetti::before {
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.confetti::after {
+    content: '🎊';
+    left: 80%;
+    animation-delay: 1s;
+}
+
+@keyframes confettiFall {
+    0% {
+        top: -10%;
+        transform: rotate(0deg);
+    }
+
+    100% {
+        top: 110%;
+        transform: rotate(360deg);
+    }
+}
+
+.celebration-content {
+    position: relative;
+    z-index: 1;
+}
+
+.celebration-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    color: white;
+    margin-bottom: 20px;
+    animation: bounceIn 1s;
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+
+    70% {
+        transform: scale(0.9);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.celebration-message {
+    font-size: 22px;
+    color: white;
+    margin-bottom: 30px;
+    animation: fadeIn 1s ease-out 0.5s backwards;
+}
+
+.hearts-animation {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    font-size: 40px;
+}
+
+.heart {
+    animation: floatHeart 2s infinite;
+}
+
+.heart:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.heart:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.heart:nth-child(4) {
+    animation-delay: 0.6s;
+}
+
+.heart:nth-child(5) {
+    animation-delay: 0.8s;
+}
+
+@keyframes floatHeart {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-20px) scale(1.2);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .question {
+        font-size: 32px;
+        line-height: 1.3;
+    }
+
+    .subtitle {
+        font-size: 16px;
+        line-height: 1.5;
+        margin-bottom: 30px;
+    }
+
+    .btn {
+        padding: 16px 40px;
+        font-size: 18px;
+        min-width: 120px;
+    }
+
+    .celebration-title {
+        font-size: 28px;
+        line-height: 1.3;
+    }
+
+    .celebration-message {
+        font-size: 18px;
+        line-height: 1.5;
+    }
+
+    .card {
+        padding: 40px 25px;
+    }
+
+    .heart-icon {
+        font-size: 60px;
+    }
+
+    .hearts-animation {
+        font-size: 35px;
+        gap: 10px;
+    }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+    .question {
+        font-size: 28px;
+        line-height: 1.3;
+    }
+
+    .subtitle {
+        font-size: 14px;
+        margin-bottom: 25px;
+    }
+
+    .btn {
+        padding: 14px 30px;
+        font-size: 16px;
+        min-width: 100px;
+    }
+
+    .celebration-title {
+        font-size: 24px;
+    }
+
+    .celebration-message {
+        font-size: 16px;
+    }
+
+    .card {
+        padding: 30px 20px;
+        border-radius: 20px;
+    }
+
+    .heart-icon {
+        font-size: 50px;
+    }
+
+    .hearts-animation {
+        font-size: 30px;
+        gap: 8px;
+    }
+
+    .button-container {
+        gap: 15px;
+    }
+}
+
+/* Landscape mode on mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+    body {
+        overflow-y: auto;
+    }
+
+    .card {
+        margin: 20px 0;
+        padding: 30px 25px;
+    }
+
+    .question {
+        font-size: 28px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .heart-icon {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    .btn {
+        padding: 12px 30px;
+        font-size: 16px;
+    }
+}
+
+/* Ensure touch-friendly interactions */
+@media (hover: none) and (pointer: coarse) {
+    .btn {
+        min-height: 48px;
+        min-width: 120px;
+    }
+
+    .btn:active {
+        transform: scale(0.95);
+    }
+}
+
+
+/* Shake animation for dramatic effect */
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translateX(-5px);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translateX(5px);
+    }
+}
+
+.shake {
+    animation: shake 0.5s;
+}
+
+/* Pulse animation */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.pulse {
+    animation: pulse 0.5s;
+}
