@@ -4,491 +4,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anime World - Enter the Universe</title>
+    <title>HyperForge - Minecraft World</title>
     <meta name="description"
-        content="Immerse yourself in a stunning anime universe with cutting-edge visuals, dynamic animations, and an unforgettable experience.">
+        content="Welcome to HyperForge - A Minecraft-themed showcase of awesome projects and cool stuff!">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <!-- Animated Background Particles -->
-    <div class="particles-container" id="particles"></div>
+    <!-- Pixelated Sky Background -->
+    <div class="minecraft-sky"></div>
 
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <span class="logo-icon">⚡</span>
-                <span class="logo-text">ANIME<span class="highlight">VERSE</span></span>
-            </div>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="#home" class="nav-link active">Home</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#features" class="nav-link">Features</a></li>
-                <li><a href="#gallery" class="nav-link">Gallery</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
-            </ul>
-            <button class="cta-button">Join Now</button>
-            <div class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </nav>
+    <!-- Floating Clouds -->
+    <div class="clouds-container">
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+    </div>
 
-    <!-- Hero Section with Parallax -->
-    <section class="hero" id="home">
-        <div class="parallax-layer layer-1"></div>
-        <div class="parallax-layer layer-2"></div>
-        <div class="parallax-layer layer-3"></div>
+    <!-- Main Container -->
+    <div class="game-container">
 
-        <div class="hero-content">
-            <div class="hero-badge">
-                <span class="pulse-dot"></span>
-                <span>NOW STREAMING</span>
+        <!-- Header / Title Screen -->
+        <header class="minecraft-header">
+            <div class="logo-container">
+                <h1 class="minecraft-title">
+                    <span class="title-shadow">HYPERFORGE</span>
+                    <span class="title-text">HYPERFORGE</span>
+                </h1>
+                <p class="subtitle">⚒️ Crafting Cool Digital Experiences ⚒️</p>
             </div>
-            <h1 class="hero-title">
-                <span class="title-line">Enter The</span>
-                <span class="title-line highlight-gradient">Anime Universe</span>
-            </h1>
-            <p class="hero-description">
-                Discover a world where reality meets imagination. Experience breathtaking stories,
-                unforgettable characters, and adventures that transcend dimensions.
-            </p>
-            <div class="hero-buttons">
-                <button class="btn btn-primary">
-                    <span>Start Watching</span>
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
+        </header>
+
+        <!-- Menu Buttons (Minecraft Style) -->
+        <section class="menu-section">
+            <div class="menu-container">
+                <button class="mc-button main-button" onclick="scrollToProjects()">
+                    <span class="button-text">🎮 Enter World</span>
                 </button>
-                <button class="btn btn-secondary">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2" />
-                        <path d="M8 7L13 10L8 13V7Z" fill="currentColor" />
-                    </svg>
-                    <span>Watch Trailer</span>
+                <button class="mc-button" onclick="window.open('https://github.com/NOTHIN5', '_blank')">
+                    <span class="button-text">👤 GitHub Profile</span>
+                </button>
+                <button class="mc-button" onclick="showInfo()">
+                    <span class="button-text">📜 About</span>
                 </button>
             </div>
-            <div class="hero-stats">
-                <div class="stat-item">
-                    <h3 class="stat-number" data-target="1000">0</h3>
-                    <p class="stat-label">Anime Series</p>
-                </div>
-                <div class="stat-item">
-                    <h3 class="stat-number" data-target="50000">0</h3>
-                    <p class="stat-label">Episodes</p>
-                </div>
-                <div class="stat-item">
-                    <h3 class="stat-number" data-target="5000000">0</h3>
-                    <p class="stat-label">Active Fans</p>
-                </div>
+        </section>
+
+        <!-- Info Box (Hidden by default) -->
+        <div class="info-box" id="infoBox">
+            <div class="info-content">
+                <h2>📦 Welcome to HyperForge!</h2>
+                <p>This is my personal showcase website where I create and share cool digital projects.</p>
+                <p>🎮 Minecraft lover | 💻 Digital creator | 🚀 Building awesome stuff</p>
+                <button class="mc-button small" onclick="hideInfo()">Close</button>
             </div>
         </div>
 
-        <div class="hero-image">
-            <div class="floating-card card-1">
-                <div class="card-glow"></div>
-                <div class="card-content">⭐ Trending</div>
+        <!-- Projects Showcase (Inventory Style) -->
+        <section class="projects-section" id="projects">
+            <div class="section-title">
+                <h2>📦 MY CREATIONS</h2>
+                <p class="section-subtitle">Cool projects I've crafted</p>
             </div>
-            <div class="floating-card card-2">
-                <div class="card-glow"></div>
-                <div class="card-content">🔥 Hot Release</div>
-            </div>
-            <div class="floating-card card-3">
-                <div class="card-glow"></div>
-                <div class="card-content">👑 Top Rated</div>
-            </div>
-        </div>
 
-        <div class="scroll-indicator">
-            <div class="mouse">
-                <div class="wheel"></div>
-            </div>
-            <p>Scroll to explore</p>
-        </div>
-    </section>
+            <div class="inventory-grid">
+                <!-- Project Card 1 - Proposal -->
+                <div class="inventory-slot" onclick="window.location.href='./proposal/'">
+                    <div class="item-icon">💍</div>
+                    <div class="item-info">
+                        <h3>Proposal Site</h3>
+                        <p class="rarity legendary">Legendary</p>
+                        <p class="item-desc">A special proposal website</p>
+                    </div>
+                    <div class="hover-glow"></div>
+                </div>
 
-    <!-- About Section -->
-    <section class="about" id="about">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-label">About Us</span>
-                <h2 class="section-title">Your Gateway to <span class="highlight-gradient">Anime Paradise</span></h2>
-                <p class="section-description">
-                    We're passionate about bringing the best anime content to fans worldwide.
-                    Experience premium streaming with crystal-clear quality and zero interruptions.
+                <!-- Project Card 2 - Coming Soon -->
+                <div class="inventory-slot coming-soon">
+                    <div class="item-icon">🔮</div>
+                    <div class="item-info">
+                        <h3>Mystery Project</h3>
+                        <p class="rarity epic">Epic</p>
+                        <p class="item-desc">Coming soon...</p>
+                    </div>
+                    <div class="hover-glow"></div>
+                </div>
+
+                <!-- Project Card 3 - Coming Soon -->
+                <div class="inventory-slot coming-soon">
+                    <div class="item-icon">⚔️</div>
+                    <div class="item-info">
+                        <h3>Secret Build</h3>
+                        <p class="rarity rare">Rare</p>
+                        <p class="item-desc">Under construction...</p>
+                    </div>
+                    <div class="hover-glow"></div>
+                </div>
+
+                <!-- Project Card 4 - Coming Soon -->
+                <div class="inventory-slot coming-soon">
+                    <div class="item-icon">🎨</div>
+                    <div class="item-info">
+                        <h3>Creative Work</h3>
+                        <p class="rarity uncommon">Uncommon</p>
+                        <p class="item-desc">In development...</p>
+                    </div>
+                    <div class="hover-glow"></div>
+                </div>
+
+                <!-- Project Card 5 - Coming Soon -->
+                <div class="inventory-slot coming-soon">
+                    <div class="item-icon">🏗️</div>
+                    <div class="item-info">
+                        <h3>Builder's Dream</h3>
+                        <p class="rarity common">Common</p>
+                        <p class="item-desc">Crafting in progress...</p>
+                    </div>
+                    <div class="hover-glow"></div>
+                </div>
+
+                <!-- Project Card 6 - Coming Soon -->
+                <div class="inventory-slot coming-soon">
+                    <div class="item-icon">💎</div>
+                    <div class="item-info">
+                        <h3>Diamond Project</h3>
+                        <p class="rarity legendary">Legendary</p>
+                        <p class="item-desc">Rare find incoming...</p>
+                    </div>
+                    <div class="hover-glow"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section (Like Minecraft Stats Screen) -->
+        <section class="stats-section">
+            <div class="stats-container">
+                <div class="stat-block">
+                    <div class="stat-icon">⚒️</div>
+                    <div class="stat-info">
+                        <h3 class="stat-number" id="projectsCount">6</h3>
+                        <p>Projects Crafted</p>
+                    </div>
+                </div>
+                <div class="stat-block">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-info">
+                        <h3 class="stat-number" id="ideasCount">∞</h3>
+                        <p>Cool Ideas</p>
+                    </div>
+                </div>
+                <div class="stat-block">
+                    <div class="stat-icon">🎮</div>
+                    <div class="stat-info">
+                        <h3 class="stat-number" id="funLevel">100%</h3>
+                        <p>Fun Level</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer (Minecraft Credits Style) -->
+        <footer class="minecraft-footer">
+            <div class="footer-content">
+                <p>🎮 Built with 💚 by a Minecraft enthusiast</p>
+                <p class="footer-links">
+                    <a href="https://github.com/NOTHIN5" target="_blank">GitHub</a> •
+                    <a href="#" onclick="showInfo(); return false;">About</a>
                 </p>
+                <p class="copyright">© 2026 HyperForge.online - Not affiliated with Mojang Studios</p>
             </div>
+        </footer>
+    </div>
 
-            <div class="about-grid">
-                <div class="about-card">
-                    <div class="card-icon">🎬</div>
-                    <h3>Premium Content</h3>
-                    <p>Access thousands of anime series, movies, and exclusive originals in stunning HD and 4K quality.
-                    </p>
-                </div>
-                <div class="about-card">
-                    <div class="card-icon">⚡</div>
-                    <h3>Lightning Fast</h3>
-                    <p>Enjoy instant streaming with our optimized servers. No buffering, just pure anime bliss.</p>
-                </div>
-                <div class="about-card">
-                    <div class="card-icon">🌍</div>
-                    <h3>Global Community</h3>
-                    <p>Join millions of anime fans worldwide. Share, discuss, and celebrate your favorite shows.</p>
-                </div>
-                <div class="about-card">
-                    <div class="card-icon">🎨</div>
-                    <h3>All Genres</h3>
-                    <p>From action to romance, comedy to thriller - discover anime across every genre imaginable.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- Floating Block Particles -->
+    <div class="particles" id="particles"></div>
 
-    <!-- Features Section with Parallax Cards -->
-    <section class="features" id="features">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-label">Features</span>
-                <h2 class="section-title">Why Choose <span class="highlight-gradient">AnimeVerse</span></h2>
-            </div>
-
-            <div class="features-grid">
-                <div class="feature-card" data-tilt>
-                    <div class="feature-icon">
-                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                            <circle cx="24" cy="24" r="20" stroke="url(#gradient1)" stroke-width="2" />
-                            <path d="M18 24L22 28L30 20" stroke="url(#gradient1)" stroke-width="2"
-                                stroke-linecap="round" />
-                            <defs>
-                                <linearGradient id="gradient1" x1="0" y1="0" x2="48" y2="48">
-                                    <stop offset="0%" stop-color="#FF6B9D" />
-                                    <stop offset="100%" stop-color="#C371F5" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                    </div>
-                    <h3>Ad-Free Experience</h3>
-                    <p>Watch your favorite anime without any interruptions. Pure, uninterrupted entertainment.</p>
-                </div>
-
-                <div class="feature-card" data-tilt>
-                    <div class="feature-icon">
-                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                            <rect x="8" y="12" width="32" height="24" rx="2" stroke="url(#gradient2)"
-                                stroke-width="2" />
-                            <path d="M20 22L28 18V30L20 26V22Z" fill="url(#gradient2)" />
-                            <defs>
-                                <linearGradient id="gradient2" x1="0" y1="0" x2="48" y2="48">
-                                    <stop offset="0%" stop-color="#4ECDC4" />
-                                    <stop offset="100%" stop-color="#44A08D" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                    </div>
-                    <h3>4K Ultra HD</h3>
-                    <p>Crystal clear visuals with support for 4K streaming. Every frame is a masterpiece.</p>
-                </div>
-
-                <div class="feature-card" data-tilt>
-                    <div class="feature-icon">
-                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                            <path d="M24 8V24L32 28" stroke="url(#gradient3)" stroke-width="2" stroke-linecap="round" />
-                            <circle cx="24" cy="24" r="16" stroke="url(#gradient3)" stroke-width="2" />
-                            <defs>
-                                <linearGradient id="gradient3" x1="0" y1="0" x2="48" y2="48">
-                                    <stop offset="0%" stop-color="#F093FB" />
-                                    <stop offset="100%" stop-color="#F5576C" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                    </div>
-                    <h3>Watch Anytime</h3>
-                    <p>Stream on any device, anywhere. Download episodes for offline viewing on the go.</p>
-                </div>
-
-                <div class="feature-card" data-tilt>
-                    <div class="feature-icon">
-                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                            <circle cx="16" cy="24" r="6" stroke="url(#gradient4)" stroke-width="2" />
-                            <circle cx="32" cy="24" r="6" stroke="url(#gradient4)" stroke-width="2" />
-                            <path d="M22 24H26" stroke="url(#gradient4)" stroke-width="2" />
-                            <defs>
-                                <linearGradient id="gradient4" x1="0" y1="0" x2="48" y2="48">
-                                    <stop offset="0%" stop-color="#FFA751" />
-                                    <stop offset="100%" stop-color="#FFE259" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                    </div>
-                    <h3>Multi-Profile</h3>
-                    <p>Create separate profiles for each family member. Personalized recommendations for everyone.</p>
-                </div>
-
-                <div class="feature-card" data-tilt>
-                    <div class="feature-icon">
-                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                            <path d="M24 12L16 20H20V32H28V20H32L24 12Z" stroke="url(#gradient5)" stroke-width="2"
-                                stroke-linejoin="round" />
-                            <defs>
-                                <linearGradient id="gradient5" x1="0" y1="0" x2="48" y2="48">
-                                    <stop offset="0%" stop-color="#667EEA" />
-                                    <stop offset="100%" stop-color="#764BA2" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                    </div>
-                    <h3>Latest Releases</h3>
-                    <p>Get the newest episodes as soon as they air. Never miss your favorite shows again.</p>
-                </div>
-
-                <div class="feature-card" data-tilt>
-                    <div class="feature-icon">
-                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                            <path d="M12 24L20 32L36 16" stroke="url(#gradient6)" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                            <defs>
-                                <linearGradient id="gradient6" x1="0" y1="0" x2="48" y2="48">
-                                    <stop offset="0%" stop-color="#FA8BFF" />
-                                    <stop offset="50%" stop-color="#2BD2FF" />
-                                    <stop offset="100%" stop-color="#2BFF88" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                    </div>
-                    <h3>Quality Subs & Dubs</h3>
-                    <p>Professional subtitles and dubbing in multiple languages. Watch the way you prefer.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Gallery Section -->
-    <section class="gallery" id="gallery">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-label">Gallery</span>
-                <h2 class="section-title">Popular <span class="highlight-gradient">Right Now</span></h2>
-            </div>
-
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <div class="gallery-image">
-                        <div class="image-placeholder"
-                            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                            <span class="placeholder-text">🎭</span>
-                        </div>
-                    </div>
-                    <div class="gallery-overlay">
-                        <h3>Action & Adventure</h3>
-                        <p>Epic battles and thrilling journeys</p>
-                        <button class="overlay-btn">Watch Now</button>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <div class="gallery-image">
-                        <div class="image-placeholder"
-                            style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                            <span class="placeholder-text">💖</span>
-                        </div>
-                    </div>
-                    <div class="gallery-overlay">
-                        <h3>Romance & Drama</h3>
-                        <p>Heartfelt stories that move you</p>
-                        <button class="overlay-btn">Watch Now</button>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <div class="gallery-image">
-                        <div class="image-placeholder"
-                            style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                            <span class="placeholder-text">🔮</span>
-                        </div>
-                    </div>
-                    <div class="gallery-overlay">
-                        <h3>Fantasy & Magic</h3>
-                        <p>Mystical worlds and powers</p>
-                        <button class="overlay-btn">Watch Now</button>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <div class="gallery-image">
-                        <div class="image-placeholder"
-                            style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
-                            <span class="placeholder-text">😂</span>
-                        </div>
-                    </div>
-                    <div class="gallery-overlay">
-                        <h3>Comedy & Slice of Life</h3>
-                        <p>Laugh and enjoy everyday moments</p>
-                        <button class="overlay-btn">Watch Now</button>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <div class="gallery-image">
-                        <div class="image-placeholder"
-                            style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
-                            <span class="placeholder-text">🎓</span>
-                        </div>
-                    </div>
-                    <div class="gallery-overlay">
-                        <h3>School & Youth</h3>
-                        <p>Coming-of-age stories</p>
-                        <button class="overlay-btn">Watch Now</button>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <div class="gallery-image">
-                        <div class="image-placeholder"
-                            style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
-                            <span class="placeholder-text">🌸</span>
-                        </div>
-                    </div>
-                    <div class="gallery-overlay">
-                        <h3>Shoujo & Magical Girl</h3>
-                        <p>Transform and save the world</p>
-                        <button class="overlay-btn">Watch Now</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <div class="cta-glow"></div>
-                <h2>Ready to Start Your <span class="highlight-gradient">Anime Journey?</span></h2>
-                <p>Join millions of fans streaming the best anime content. Start your free trial today!</p>
-                <div class="cta-buttons">
-                    <button class="btn btn-primary btn-large">
-                        <span>Start Free Trial</span>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </button>
-                    <button class="btn btn-outline btn-large">Learn More</button>
-                </div>
-                <div class="cta-features">
-                    <div class="cta-feature">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M7 10L9 12L13 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                            <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2" />
-                        </svg>
-                        <span>No credit card required</span>
-                    </div>
-                    <div class="cta-feature">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M7 10L9 12L13 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                            <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2" />
-                        </svg>
-                        <span>Cancel anytime</span>
-                    </div>
-                    <div class="cta-feature">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M7 10L9 12L13 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                            <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2" />
-                        </svg>
-                        <span>Access all content</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer" id="contact">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <div class="footer-logo">
-                        <span class="logo-icon">⚡</span>
-                        <span class="logo-text">ANIME<span class="highlight">VERSE</span></span>
-                    </div>
-                    <p>Your ultimate destination for premium anime streaming. Watch anywhere, anytime.</p>
-                    <div class="social-links">
-                        <a href="#" class="social-link">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path
-                                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                            </svg>
-                        </a>
-                        <a href="#" class="social-link">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path
-                                    d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
-                            </svg>
-                        </a>
-                        <a href="#" class="social-link">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path
-                                    d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z" />
-                            </svg>
-                        </a>
-                        <a href="#" class="social-link">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path
-                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="footer-col">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="#gallery">Browse Anime</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-col">
-                    <h4>Categories</h4>
-                    <ul>
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Romance</a></li>
-                        <li><a href="#">Fantasy</a></li>
-                        <li><a href="#">Comedy</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-col">
-                    <h4>Support</h4>
-                    <ul>
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p>&copy; 2026 AnimeVerse. All rights reserved. Made with ❤️ for anime fans worldwide.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <script src="script.js"></script>
 </body>
 

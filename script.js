@@ -1,229 +1,219 @@
 // ==========================================
-// ANIME LANDING PAGE - INTERACTIVE FEATURES
+// MINECRAFT THEME - INTERACTIVE FEATURES
 // ==========================================
 
-// ===== NAVBAR SCROLL EFFECT =====
-const navbar = document.getElementById('navbar');
-const navLinks = document.querySelectorAll('.nav-link');
+// ===== SMOOTH SCROLL TO PROJECTS =====
+function scrollToProjects() {
+    const projectsSection = document.getElementById('projects');
+    projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 100) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
+    // Play click sound effect (simulated with visual feedback)
+    createClickEffect(event);
+}
+
+// ===== SHOW/HIDE INFO BOX =====
+function showInfo() {
+    const infoBox = document.getElementById('infoBox');
+    infoBox.classList.add('active');
+    createClickEffect(event);
+}
+
+function hideInfo() {
+    const infoBox = document.getElementById('infoBox');
+    infoBox.classList.remove('active');
+    createClickEffect(event);
+}
+
+// ===== CLICK EFFECT (Minecraft Click Feedback) =====
+function createClickEffect(e) {
+    if (!e) return;
+
+    const click = document.createElement('div');
+    click.style.position = 'fixed';
+    click.style.left = e.clientX + 'px';
+    click.style.top = e.clientY + 'px';
+    click.style.width = '20px';
+    click.style.height = '20px';
+    click.style.background = '#ffeb3b';
+    click.style.borderRadius = '0';
+    click.style.pointerEvents = 'none';
+    click.style.zIndex = '9999';
+    click.style.animation = 'clickPop 0.5s ease-out';
+
+    document.body.appendChild(click);
+
+    setTimeout(() => click.remove(), 500);
+}
+
+// Add keyframe animation for click effect
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes clickPop {
+        0% { transform: scale(1); opacity: 1; }
+        100% { transform: scale(3); opacity: 0; }
     }
+`;
+document.head.appendChild(style);
 
-    // Update active nav link based on scroll position
-    let current = '';
-    document.querySelectorAll('section').forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (window.scrollY >= sectionTop - 200) {
-            current = section.getAttribute('id');
-        }
-    });
-
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href').slice(1) === current) {
-            link.classList.add('active');
-        }
-    });
-});
-
-// ===== MOBILE MENU TOGGLE =====
-const hamburger = document.getElementById('hamburger');
-const navMenu = document.getElementById('navMenu');
-
-hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navMenu.classList.toggle('active');
-});
-
-// Close menu when clicking on a link
-navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
-    });
-});
-
-// ===== ANIMATED PARTICLES IN BACKGROUND =====
+// ===== CREATE FLOATING PARTICLES (Grass, Dirt blocks) =====
 function createParticles() {
     const particlesContainer = document.getElementById('particles');
-    const particleCount = 50;
+    const particleCount = 20;
+    const colors = ['#7cbd4e', '#8b5a3c', '#525252', '#4dd0e1'];
 
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
-        particle.style.position = 'absolute';
-        particle.style.width = Math.random() * 4 + 1 + 'px';
-        particle.style.height = particle.style.width;
-        particle.style.borderRadius = '50%';
+        particle.className = 'particle';
         particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-
-        const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe'];
+        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        particle.style.animationDelay = Math.random() * 5 + 's';
         particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-        particle.style.opacity = Math.random() * 0.5 + 0.1;
-        particle.style.pointerEvents = 'none';
+        particle.style.width = particle.style.height = (Math.random() * 8 + 4) + 'px';
 
         particlesContainer.appendChild(particle);
-
-        // Animate particle
-        animateParticle(particle);
     }
 }
 
-function animateParticle(particle) {
-    const duration = Math.random() * 10000 + 5000;
-    const delay = Math.random() * 2000;
+// ===== INVENTORY SLOT HOVER SOUND (Visual feedback) =====
+document.addEventListener('DOMContentLoaded', () => {
+    const inventorySlots = document.querySelectorAll('.inventory-slot');
 
-    anime({
-        targets: particle,
-        translateX: () => anime.random(-100, 100),
-        translateY: () => anime.random(-100, 100),
-        scale: [1, Math.random() * 1.5 + 0.5, 1],
-        opacity: [
-            { value: Math.random() * 0.5 + 0.2, duration: duration / 2 },
-            { value: Math.random() * 0.3 + 0.1, duration: duration / 2 }
-        ],
-        duration: duration,
-        delay: delay,
-        easing: 'easeInOutSine',
-        loop: true
+    inventorySlots.forEach(slot => {
+        // Skip coming soon slots from having click effect
+        if (!slot.classList.contains('coming-soon')) {
+            slot.addEventListener('click', function (e) {
+                createClickEffect(e);
+            });
+        }
+
+        // Hover effect
+        slot.addEventListener('mouseenter', function () {
+            if (!this.classList.contains('coming-soon')) {
+                this.style.animation = 'bounceSlot 0.3s ease-out';
+                setTimeout(() => {
+                    this.style.animation = '';
+                }, 300);
+            }
+        });
+    });
+});
+
+// Add bounce animation for slots
+const bounceStyle = document.createElement('style');
+bounceStyle.textContent = `
+    @keyframes bounceSlot {
+        0%, 100% { transform: translateY(-10px) scale(1.05); }
+        50% { transform: translateY(-15px) scale(1.08); }
+    }
+`;
+document.head.appendChild(bounceStyle);
+
+// ===== STATS COUNTER ANIMATION =====
+function animateStats() {
+    const stats = document.querySelectorAll('.stat-number');
+
+    stats.forEach(stat => {
+        const text = stat.textContent;
+        // Only animate if it's a number
+        if (!isNaN(parseInt(text))) {
+            const target = parseInt(text);
+            let current = 0;
+            const increment = target / 50;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    stat.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    stat.textContent = Math.floor(current);
+                }
+            }, 30);
+        }
     });
 }
 
-// ===== PARALLAX SCROLLING EFFECT =====
+// ===== PARALLAX EFFECT ON SCROLL =====
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
-    const parallaxLayers = document.querySelectorAll('.parallax-layer');
+    const clouds = document.querySelectorAll('.cloud');
 
-    parallaxLayers.forEach((layer, index) => {
-        const speed = (index + 1) * 0.1;
-        layer.style.transform = `translateY(${scrolled * speed}px)`;
+    clouds.forEach((cloud, index) => {
+        const speed = (index + 1) * 0.05;
+        cloud.style.transform = `translateX(${scrolled * speed}px)`;
     });
 });
 
-// ===== COUNTER ANIMATION FOR STATS =====
-function animateCounters() {
-    const counters = document.querySelectorAll('.stat-number');
-
-    counters.forEach(counter => {
-        const target = parseInt(counter.getAttribute('data-target'));
-
-        anime({
-            targets: counter,
-            innerHTML: [0, target],
-            duration: 2000,
-            delay: 500,
-            easing: 'easeOutExpo',
-            round: 1,
-            update: function (anim) {
-                counter.innerHTML = Math.floor(anim.animations[0].currentValue).toLocaleString();
+// ===== KEYBOARD NAVIGATION (Minecraft style) =====
+document.addEventListener('keydown', (e) => {
+    switch (e.key) {
+        case 'Escape':
+            hideInfo();
+            break;
+        case 'Enter':
+            const infoBox = document.getElementById('infoBox');
+            if (infoBox.classList.contains('active')) {
+                hideInfo();
             }
-        });
-    });
+            break;
+    }
+});
+
+// ===== MINECRAFT DAY/NIGHT CYCLE (Optional Feature) =====
+let isDaytime = true;
+
+function toggleDayNight() {
+    const sky = document.querySelector('.minecraft-sky');
+    isDaytime = !isDaytime;
+
+    if (isDaytime) {
+        sky.style.background = 'linear-gradient(180deg, #78a7ff 0%, #a8d5ff 50%, #d4e9ff 100%)';
+    } else {
+        sky.style.background = 'linear-gradient(180deg, #0f0f23 0%, #1a1a3e 50%, #2d2d5f 100%)';
+    }
 }
 
-// ===== INTERSECTION OBSERVER FOR SCROLL ANIMATIONS =====
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
-};
+// Change to night every 30 seconds (you can adjust or remove this)
+// setInterval(toggleDayNight, 30000);
 
-const animateOnScroll = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const target = entry.target;
+// ===== RANDOM BLOCK PLACER (Easter Egg) =====
+let blockCount = 0;
 
-            // Fade in animation
-            anime({
-                targets: target,
-                opacity: [0, 1],
-                translateY: [50, 0],
-                duration: 1000,
-                easing: 'easeOutCubic'
-            });
+document.addEventListener('click', (e) => {
+    // 5% chance to spawn a random block on click
+    if (Math.random() < 0.05) {
+        const block = document.createElement('div');
+        block.style.position = 'fixed';
+        block.style.left = e.clientX - 8 + 'px';
+        block.style.top = e.clientY - 8 + 'px';
+        block.style.width = '16px';
+        block.style.height = '16px';
+        block.style.background = ['#7cbd4e', '#8b5a3c', '#525252'][Math.floor(Math.random() * 3)];
+        block.style.border = '1px solid #000';
+        block.style.pointerEvents = 'none';
+        block.style.zIndex = '1';
+        block.style.animation = 'blockFade 2s ease-out forwards';
 
-            animateOnScroll.unobserve(target);
-        }
-    });
-}, observerOptions);
+        document.body.appendChild(block);
 
-// Observe elements
-document.addEventListener('DOMContentLoaded', () => {
-    // Cards
-    document.querySelectorAll('.about-card, .feature-card, .gallery-item').forEach(card => {
-        card.style.opacity = '0';
-        animateOnScroll.observe(card);
-    });
+        setTimeout(() => block.remove(), 2000);
 
-    // Section headers
-    document.querySelectorAll('.section-header').forEach(header => {
-        header.style.opacity = '0';
-        animateOnScroll.observe(header);
-    });
-
-    // Create particles
-    createParticles();
-
-    // Animate counters when hero is visible
-    const heroSection = document.querySelector('.hero');
-    const heroObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                animateCounters();
-                heroObserver.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.5 });
-
-    heroObserver.observe(heroSection);
+        blockCount++;
+    }
 });
 
-// ===== TILT EFFECT FOR FEATURE CARDS =====
-document.querySelectorAll('[data-tilt]').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-
-        const rotateX = (y - centerY) / 10;
-        const rotateY = (centerX - x) / 10;
-
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
-    });
-
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
-    });
-});
-
-// ===== SMOOTH SCROLL TO SECTIONS =====
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-
-        if (target) {
-            const offsetTop = target.offsetTop - 80;
-
-            anime({
-                targets: 'html, body',
-                scrollTop: offsetTop,
-                duration: 1000,
-                easing: 'easeInOutCubic'
-            });
-        }
-    });
-});
+// Add block fade animation
+const blockStyle = document.createElement('style');
+blockStyle.textContent = `
+    @keyframes blockFade {
+        0% { opacity: 1; transform: scale(1); }
+        100% { opacity: 0; transform: scale(0) rotate(180deg); }
+    }
+`;
+document.head.appendChild(blockStyle);
 
 // ===== BUTTON RIPPLE EFFECT =====
-document.querySelectorAll('button, .btn').forEach(button => {
+document.querySelectorAll('.mc-button').forEach(button => {
     button.addEventListener('click', function (e) {
         const ripple = document.createElement('span');
         const rect = this.getBoundingClientRect();
@@ -235,175 +225,106 @@ document.querySelectorAll('button, .btn').forEach(button => {
         ripple.style.left = x + 'px';
         ripple.style.top = y + 'px';
         ripple.style.position = 'absolute';
-        ripple.style.borderRadius = '50%';
         ripple.style.background = 'rgba(255, 255, 255, 0.5)';
-        ripple.style.pointerEvents = 'none';
         ripple.style.transform = 'scale(0)';
+        ripple.style.animation = 'ripple 0.6s ease-out';
+        ripple.style.pointerEvents = 'none';
 
         this.style.position = 'relative';
         this.style.overflow = 'hidden';
         this.appendChild(ripple);
 
-        anime({
-            targets: ripple,
-            scale: [0, 2],
-            opacity: [1, 0],
-            duration: 600,
-            easing: 'easeOutExpo',
-            complete: () => ripple.remove()
-        });
+        setTimeout(() => ripple.remove(), 600);
     });
 });
 
-// ===== GALLERY ITEM CLICK ANIMATION =====
-document.querySelectorAll('.gallery-item').forEach(item => {
-    item.addEventListener('click', function () {
-        const overlay = this.querySelector('.gallery-overlay');
+// Add ripple animation
+const rippleStyle = document.createElement('style');
+rippleStyle.textContent = `
+    @keyframes ripple {
+        to { transform: scale(2); opacity: 0; }
+    }
+`;
+document.head.appendChild(rippleStyle);
 
-        anime({
-            targets: overlay,
-            scale: [0.95, 1],
-            duration: 300,
-            easing: 'easeOutBack'
-        });
-    });
-});
+// ===== INTERSECTION OBSERVER FOR ANIMATIONS =====
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+};
 
-// ===== HERO FLOATING CARDS ANIMATION =====
-anime({
-    targets: '.floating-card',
-    translateY: [
-        { value: -20, duration: 2000 },
-        { value: 0, duration: 2000 }
-    ],
-    loop: true,
-    easing: 'easeInOutSine',
-    delay: anime.stagger(500)
-});
-
-// ===== GRADIENT ANIMATION ON HOVER =====
-document.querySelectorAll('.btn-primary, .cta-button').forEach(btn => {
-    btn.addEventListener('mouseenter', function () {
-        anime({
-            targets: this,
-            scale: 1.05,
-            duration: 300,
-            easing: 'easeOutBack'
-        });
-    });
-
-    btn.addEventListener('mouseleave', function () {
-        anime({
-            targets: this,
-            scale: 1,
-            duration: 300,
-            easing: 'easeOutBack'
-        });
-    });
-});
-
-// ===== CURSOR TRAIL EFFECT (OPTIONAL - PREMIUM TOUCH) =====
-let cursorTrail = [];
-const trailLength = 20;
-
-document.addEventListener('mousemove', (e) => {
-    // Only on desktop
-    if (window.innerWidth > 768) {
-        cursorTrail.push({
-            x: e.clientX,
-            y: e.clientY,
-            timestamp: Date.now()
-        });
-
-        if (cursorTrail.length > trailLength) {
-            cursorTrail.shift();
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+            observer.unobserve(entry.target);
         }
+    });
+}, observerOptions);
+
+// Observe elements for scroll animations
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.inventory-slot, .stat-block').forEach(el => {
+        el.style.opacity = '0';
+        observer.observe(el);
+    });
+});
+
+// Add fade in animation
+const fadeStyle = document.createElement('style');
+fadeStyle.textContent = `
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+`;
+document.head.appendChild(fadeStyle);
+
+// ===== INITIALIZE ON LOAD =====
+window.addEventListener('load', () => {
+    // Create floating particles
+    createParticles();
+
+    // Animate stats after a delay
+    setTimeout(animateStats, 1000);
+
+    // Add title animation
+    const title = document.querySelector('.title-text');
+    if (title) {
+        title.style.animation = 'fadeInDown 1s ease-out';
     }
 });
 
-// ===== LOADING ANIMATION =====
-window.addEventListener('load', () => {
-    // Animate hero content on load
-    anime.timeline()
-        .add({
-            targets: '.hero-badge',
-            opacity: [0, 1],
-            translateY: [-30, 0],
-            duration: 800,
-            easing: 'easeOutCubic'
-        })
-        .add({
-            targets: '.hero-title .title-line',
-            opacity: [0, 1],
-            translateY: [30, 0],
-            duration: 800,
-            delay: anime.stagger(100),
-            easing: 'easeOutCubic'
-        }, '-=400')
-        .add({
-            targets: '.hero-description',
-            opacity: [0, 1],
-            translateY: [30, 0],
-            duration: 800,
-            easing: 'easeOutCubic'
-        }, '-=400')
-        .add({
-            targets: '.hero-buttons',
-            opacity: [0, 1],
-            translateY: [30, 0],
-            duration: 800,
-            easing: 'easeOutCubic'
-        }, '-=400')
-        .add({
-            targets: '.hero-stats',
-            opacity: [0, 1],
-            translateY: [30, 0],
-            duration: 800,
-            easing: 'easeOutCubic'
-        }, '-=400');
-});
-
-// ===== DYNAMIC BACKGROUND COLOR ON SCROLL =====
-const sections = document.querySelectorAll('section');
-const body = document.body;
-
-window.addEventListener('scroll', () => {
-    let current = '';
-
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (window.scrollY >= sectionTop - 300) {
-            current = section.getAttribute('id');
+// Add fade in down animation
+const fadeDownStyle = document.createElement('style');
+fadeDownStyle.textContent = `
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
         }
-    });
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+`;
+document.head.appendChild(fadeDownStyle);
 
-    // You could change background colors based on section here
-    // For now, we'll keep it consistent
-});
+// ===== CONSOLE EASTER EGG =====
+console.log('%c🎮 Welcome to HyperForge! 🎮', 'color: #7cbd4e; font-size: 24px; font-weight: bold; font-family: monospace;');
+console.log('%c⚒️ Built with Minecraft vibes and pixel-perfect love!', 'color: #ffeb3b; font-size: 14px; font-family: monospace;');
+console.log('%c💎 Found a bug? Let me know! 💎', 'color: #4dd0e1; font-size: 12px; font-family: monospace;');
+console.log('%cType "secretCommand()" for a surprise!', 'color: #ff6b00; font-size: 10px; font-family: monospace;');
 
-// ===== PERFORMANCE OPTIMIZATION =====
-// Throttle scroll events for better performance
-function throttle(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-// Apply throttling to heavy scroll handlers
-const throttledScroll = throttle(() => {
-    // Any heavy scroll calculations
-}, 100);
-
-window.addEventListener('scroll', throttledScroll);
-
-// ===== CONSOLE MESSAGE FOR DEVELOPERS =====
-console.log('%c🎌 AnimeVerse Landing Page', 'color: #667eea; font-size: 24px; font-weight: bold;');
-console.log('%cBuilt with ❤️ for anime fans worldwide', 'color: #f5576c; font-size: 14px;');
-console.log('%cPowered by Anime.js, HTML5, CSS3 & JavaScript', 'color: #4facfe; font-size: 12px;');
+// Secret command function
+window.secretCommand = function () {
+    alert('🎉 Achievement Unlocked: Developer Console Explorer! 🎉\n\nYou found the secret command! Keep exploring! ⛏️');
+    console.log('%c🏆 Achievement Unlocked! 🏆', 'color: #ffeb3b; font-size: 20px; font-family: monospace; background: #000; padding: 10px;');
+};
