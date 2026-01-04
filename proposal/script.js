@@ -1,5 +1,6 @@
 // State management
 let noClickCount = 0;
+let hasMovedButton = false;
 
 // DOM elements
 const questionCard = document.getElementById('questionCard');
@@ -18,7 +19,7 @@ const noMessages = [
     },
     {
         question: "সত্যি না বললে রেমি? 😢",
-        subtitle: "আমি তো কতদিন ধরে তোমার জন্য প্রস্তুতি নিচ্ছি!"
+        subtitle: "আমি তো কতদিন ধরে তোমার অপেক্ষায় আছি!"
     },
     {
         question: "প্লিজ রেমি, আরেকবার ভাবো! 🙏",
@@ -74,9 +75,14 @@ yesBtn.addEventListener('click', () => {
     }, 500);
 });
 
-// No button click handler
-noBtn.addEventListener('click', () => {
-    // Shake the card for dramatic effect
+// No button click handler - with better mobile support
+function handleNoClick(e) {
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    // Shake the card for  dramatic effect
     questionCard.classList.add('shake');
     setTimeout(() => questionCard.classList.remove('shake'), 500);
 
@@ -86,14 +92,7 @@ noBtn.addEventListener('click', () => {
     yesBtn.classList.add('pulse');
     setTimeout(() => yesBtn.classList.remove('pulse'), 500);
 
-    // Move No button to random position on mobile/tablet, or make it smaller
-    if (window.innerWidth <= 768) {
-        moveButtonRandomly();
-    } else {
-        makeNoButtonSmaller();
-    }
-
-    // Update the question text
+    // Update the question text first
     if (noClickCount < noMessages.length) {
         questionText.textContent = noMessages[noClickCount].question;
         subtitleText.textContent = noMessages[noClickCount].subtitle;
@@ -102,13 +101,22 @@ noBtn.addEventListener('click', () => {
         // After all messages, make it extra dramatic
         questionText.textContent = "রেমি, আমি কখনো হাল ছাড়বো না! 💕";
         subtitleText.textContent = "তুমি এখনই হ্যাঁ বলে দাও না রেমি, প্লিজ... 😊";
-
-        // Make the No button start running away
-        makeNoButtonRunAway();
     }
-});
 
-// Make No button smaller with each click
+    // Then move the button (with delay so it's harder to tap again)
+    setTimeout(() => {
+        if (window.innerWidth <= 768) {
+            moveButtonRandomlyMobile();
+        } else {
+            makeNoButtonSmaller();
+        }
+    }, 100);
+}
+
+noBtn.addEventListener('click', handleNoClick);
+noBtn.addEventListener('touchend', handleNoClick);
+
+// Make No button smaller with each click (desktop)
 function makeNoButtonSmaller() {
     const currentSize = parseFloat(getComputedStyle(noBtn).fontSize);
     if (currentSize > 10) {
@@ -118,41 +126,65 @@ function makeNoButtonSmaller() {
     }
 }
 
-// Move button to random position
-function moveButtonRandomly() {
+// Improved mobile button movement
+function moveButtonRandomlyMobile() {
     const card = questionCard.getBoundingClientRect();
-    const button = noBtn.getBoundingClientRect();
+    const cardPadding = 25; // Card padding from CSS
 
-    const maxX = card.width - button.width - 40;
-    const maxY = card.height - button.height - 40;
+    // Get available space within the card
+    const availableWidth = card.width - (cardPadding * 2);
+    const availableHeight = card.height - (cardPadding * 2) - 100; // Reserve space at bottom
 
-    const randomX = Math.random() * maxX;
-    const randomY = Math.random() * maxY;
+    // Button dimensions (approximate)
+    const buttonWidth = 120;
+    const buttonHeight = 50;
 
+    // Calculate max positions
+    const maxX = Math.max(0, availableWidth - buttonWidth);
+    const maxY = Math.max(0, availableHeight - buttonHeight - 100);
+
+    // Generate safe random position
+    let randomX = Math.random() * maxX;
+    let randomY = Math.random() * maxY;
+
+    // Ensure button doesn't overlap with Yes button area (center-left)
+    if (!hasMovedButton) {
+        // First time: move to a safe spot (right side or bottom)
+        randomX = Math.random() > 0.5 ? maxX * 0.7 : maxX * 0.1;
+        randomY = Math.random() * (maxY * 0.5) + (maxY * 0.3);
+        hasMovedButton = true;
+    }
+
+    // Apply positioning
     buttonContainer.style.position = 'relative';
+    buttonContainer.style.minHeight = '200px'; // Ensure enough space
+
     noBtn.style.position = 'absolute';
     noBtn.style.left = `${randomX}px`;
     noBtn.style.top = `${randomY}px`;
+    noBtn.style.transition = 'all 0.3s ease';
 }
 
-// Make No button run away from cursor
+// Make No button run away from cursor (desktop only)
+let hasMouseListener = false;
 function makeNoButtonRunAway() {
-    noBtn.addEventListener('mouseover', () => {
-        const card = questionCard.getBoundingClientRect();
-        const button = noBtn.getBoundingClientRect();
+    if (!hasMouseListener && window.innerWidth > 768) {
+        hasMouseListener = true;
+        noBtn.addEventListener('mouseover', () => {
+            const card = questionCard.getBoundingClientRect();
+            const maxX = card.width - 150;
+            const maxY = 200;
 
-        const maxX = card.width - button.width - 40;
-        const maxY = 200;
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
 
-        const randomX = Math.random() * maxX;
-        const randomY = Math.random() * maxY;
-
-        buttonContainer.style.position = 'relative';
-        noBtn.style.position = 'absolute';
-        noBtn.style.transition = 'all 0.3s ease';
-        noBtn.style.left = `${randomX}px`;
-        noBtn.style.top = `${randomY}px`;
-    });
+            buttonContainer.style.position = 'relative';
+            noBtn.style.position = 'absolute';
+            noBtn.style.transition = 'all 0.3s ease';
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
+        });
+    }
 }
 
 // Create confetti effect
@@ -186,3 +218,8 @@ document.addEventListener('keydown', (e) => {
         yesBtn.click();
     }
 });
+
+// If user gets to message 5+, start making button run away
+if (noClickCount >= 5) {
+    setTimeout(makeNoButtonRunAway, 1000);
+}
