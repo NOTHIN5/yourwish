@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapri Calculator 🔥</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Enhanced Animated Background -->
+    <div class="animated-bg">
+        <!-- Multiple Gradient Orbs -->
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+        <div class="gradient-orb orb-4"></div>
+        <div class="gradient-orb orb-5"></div>
+
+        <!-- Floating Particles -->
+        <div class="particles-container">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+
+        <!-- Animated Pattern Overlay -->
+        <div class="pattern-overlay"></div>
+    </div>
+
+    <div class="container">
+        <!-- Start Screen -->
+        <div id="startScreen" class="screen active">
+            <div class="title-section">
+                <h1 class="glowing-title">Chapri Calculator 🔥</h1>
+                <p class="subtitle">দেখি তুমি কতটা Chapri! 😎</p>
+
+                <!-- Chapri Memes Gallery -->
+                <div class="meme-gallery">
+                    <div class="meme-item">
+                        <img src="C:/Users/AHJAR/.gemini/antigravity/brain/a7d31009-665a-4a2c-a9c2-d10768004e64/chapri_meme_1_1767608266089.png"
+                            alt="Selfie King">
+                        <p class="meme-caption">Mirror Selfie Pro 🤳</p>
+                    </div>
+                    <div class="meme-item">
+                        <img src="C:/Users/AHJAR/.gemini/antigravity/brain/a7d31009-665a-4a2c-a9c2-d10768004e64/chapri_meme_2_1767608287333.png"
+                            alt="Modified Bike">
+                        <p class="meme-caption">Full Modified 🏍️</p>
+                    </div>
+                    <div class="meme-item">
+                        <img src="C:/Users/AHJAR/.gemini/antigravity/brain/a7d31009-665a-4a2c-a9c2-d10768004e64/chapri_meme_3_1767608308400.png"
+                            alt="PicsArt Edit">
+                        <p class="meme-caption">PicsArt Master 🔥</p>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-start" onclick="startQuiz()">শুরু করো 🚀</button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quizScreen" class="screen">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="question-counter" id="questionCounter">প্রশ্ন 1/10</div>
+
+            <div class="question-container">
+                <h2 class="question" id="question"></h2>
+                <div class="options" id="options"></div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="resultScreen" class="screen">
+            <div class="result-container">
+                <h2 class="result-title">তোমার Chapri স্কোর</h2>
+                <div class="score-circle">
+                    <svg class="circle-svg" viewBox="0 0 200 200">
+                        <circle class="circle-bg" cx="100" cy="100" r="90"></circle>
+                        <circle class="circle-progress" id="circleProgress" cx="100" cy="100" r="90"></circle>
+                    </svg>
+                    <div class="score-text">
+                        <span class="percentage" id="percentage">0%</span>
+                        <span class="chapri-label">Chapri</span>
+                    </div>
+                </div>
+                <h3 class="result-message" id="resultMessage"></h3>
+                <p class="result-description" id="resultDescription"></p>
+                <button class="btn-restart" onclick="restartQuiz()">আবার চেষ্টা করো 🔄</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
