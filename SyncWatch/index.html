@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sync Watch - Watch Together</title>
+    <meta name="description" content="Watch videos in perfect sync with friends. Support for YouTube and direct video links.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Landing Section -->
+        <section id="landing-page" class="active">
+            <div class="hero-content">
+                <div class="logo-glow"></div>
+                <h1 class="logo-text">Sync<span class="accent">Watch</span></h1>
+                <p class="tagline">Experience content together, in perfect harmony.</p>
+                
+                <div class="action-card glass-panel">
+                    <button id="create-room-btn" class="btn primary-btn">
+                        <i class="fa-solid fa-plus"></i> Create New Room
+                    </button>
+                    <div class="divider"><span>OR</span></div>
+                    <div class="input-group">
+                        <input type="text" id="room-code-input" placeholder="Enter Room Code">
+                        <button id="join-room-btn" class="btn secondary-btn">Join</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Room Section -->
+        <section id="room-page" class="hidden">
+            <header class="room-header glass-panel">
+                <div class="brand">Sync<span class="accent">Watch</span></div>
+                <div class="room-info">
+                    <span class="label">Room:</span>
+                    <span id="current-room-code" class="code">Waiting...</span>
+                    <button id="copy-room-btn" class="icon-btn" title="Copy Link"><i class="fa-regular fa-copy"></i></button>
+                </div>
+            </header>
+
+            <main class="room-content">
+                <div class="video-container glass-panel">
+                    <!-- YouTube Player Placeholder -->
+                    <div id="youtube-player"></div>
+                    <!-- HTML5 Player -->
+                    <video id="html5-player" class="hidden" controls></video>
+                    <!-- Empty State -->
+                    <div id="video-placeholder" class="video-placeholder">
+                        <i class="fa-solid fa-film"></i>
+                        <p>Ready to watch? Paste a link below.</p>
+                    </div>
+                </div>
+
+                <div class="controls-area glass-panel">
+                    <div class="url-input-wrapper">
+                        <i class="fa-solid fa-link link-icon"></i>
+                        <input type="text" id="video-url-input" placeholder="Paste YouTube or Video URL here...">
+                        <button id="load-video-btn" class="btn accent-btn">Load</button>
+                    </div>
+                    
+                    <div class="playback-status">
+                        <span id="status-text">Waiting for video...</span>
+                    </div>
+                </div>
+            </main>
+        </section>
+    </div>
+
+    <!-- Firebase SDKs (Compat for easier usage, or Modular) -->
+    <!-- We will use Modular in script.js, importing from CDN -->
+    
+    <script type="module" src="script.js"></script>
+</body>
+</html>
