@@ -189,7 +189,15 @@ function changeVideo(url) {
         currentTime: 0,
         lastUpdatedBy: userId,
         timestamp: Date.now()
-    });
+    })
+        .then(() => {
+            console.log("Firebase update successful");
+            statusText.textContent = "Loading video...";
+        })
+        .catch((error) => {
+            console.error("Firebase Error:", error);
+            alert("Error syncing video: " + error.message + "\nCheck if your Firebase Database Rules are set to public (Test Mode).");
+        });
 }
 
 function handlePlayerStateChange(state, time) {
