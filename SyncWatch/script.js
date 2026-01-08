@@ -171,6 +171,9 @@ function syncState(data) {
     setTimeout(() => { isRemoteUpdate = false; }, 500);
 }
 
+const genericPlayer = document.getElementById('generic-player');
+let iframeSyncInterval = null;
+
 function changeVideo(url) {
     let type = 'html5';
     let videoId = '';
@@ -178,6 +181,10 @@ function changeVideo(url) {
     if (url.includes('youtube.com') || url.includes('youtu.be')) {
         type = 'youtube';
         videoId = extractYouTubeId(url);
+    } else if (url.includes('.m3u8')) {
+        type = 'hls';
+    } else if (!url.match(/\.(mp4|webm|ogg)$/i)) {
+        type = 'iframe';
     }
 
     // Update Firebase
@@ -189,69 +196,69 @@ function changeVideo(url) {
         currentTime: 0,
         lastUpdatedBy: userId,
         timestamp: Date.now()
-    })
-        .then(() => {
-            console.log("Firebase update successful");
-            statusText.textContent = "Loading video...";
-        })
-        .catch((error) => {
-            console.error("Firebase Error:", error);
-            alert("Error syncing video: " + error.message + "\nCheck if your Firebase Database Rules are set to public (Test Mode).");
-        });
-}
-
-function handlePlayerStateChange(state, time) {
-    if (isRemoteUpdate) return;
-
-    console.log(`Local: ${state} at ${time}`);
-
-    update(ref(db, `rooms/${currentRoomId}`), {
-        state: state,
-        currentTime: time,
-        lastUpdatedBy: userId,
-        timestamp: Date.now()
+    }).catch((error) => {
+        alert("Firebase Error: " + error.message);
     });
-}
-
-function extractYouTubeId(url) {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
 }
 
 function loadLocalPlayer(type, url, ytId) {
     playerType = type;
     videoPlaceholder.classList.add('hidden');
 
-    if (type === 'youtube') {
-        html5Player.classList.add('hidden');
-        html5Player.pause();
-        youtubePlayerDiv.classList.remove('hidden');
+    youtubePlayerDiv.classList.add('hidden');
+    html5Player.classList.add('hidden');
+    genericPlayer.classList.add('hidden');
 
+    if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
+    html5Player.pause();
+    if (iframeSyncInterval) clearInterval(iframeSyncInterval);
+
+    if (type === 'youtube') {
+        youtubePlayerDiv.classList.remove('hidden');
         if (ytPlayer) {
             ytPlayer.loadVideoById(ytId);
         } else {
-            // Init YouTube Player
             if (!window.YT) {
                 const tag = document.createElement('script');
                 tag.src = "https://www.youtube.com/iframe_api";
-                const firstScriptTag = document.getElementsByTagName('script')[0];
-                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-                window.onYouTubeIframeAPIReady = () => {
-                    createYouTubePlayer(ytId);
-                };
+                document.body.appendChild(tag);
+                window.onYouTubeIframeAPIReady = () => createYouTubePlayer(ytId);
             } else {
                 createYouTubePlayer(ytId);
             }
         }
+    } else if (type === 'iframe') {
+        genericPlayer.classList.remove('hidden');
+        genericPlayer.src = url;
+        statusText.innerHTML = "Attempting to sync... (Requires <b style='color:red'>Unsafe Mode</b>)";
+
+        iframeSyncInterval = setInterval(() => {
+            try {
+                const videoEl = genericPlayer.contentWindow.document.querySelector('video');
+                if (videoEl && !videoEl.hasAttachedSync) {
+                    statusText.textContent = "Synced with external site!";
+                    videoEl.hasAttachedSync = true;
+                    videoEl.addEventListener('play', () => handlePlayerStateChange('playing', videoEl.currentTime));
+                    videoEl.addEventListener('pause', () => handlePlayerStateChange('paused', videoEl.currentTime));
+                    videoEl.addEventListener('seeked', () => handlePlayerStateChange(videoEl.paused ? 'paused' : 'playing', videoEl.currentTime));
+                    window.iframeVideo = videoEl;
+                }
+            } catch (e) { }
+        }, 1000);
     } else {
         // HTML5
-        youtubePlayerDiv.classList.add('hidden');
-        if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
-
         html5Player.classList.remove('hidden');
-        html5Player.src = url;
+        if (type === 'hls' && Hls.isSupported()) {
+            // Re-init HLS if needed (requires HLS code block in next chunk if HLS logic was removed, but it wasn't, just this function)
+            // Simplified HLS logic for brevity in this replace block, can assume HLS script is loaded
+            const hls = new Hls();
+            hls.loadSource(url);
+            hls.attachMedia(html5Player);
+            hls.on(Hls.Events.MANIFEST_PARSED, () => html5Player.play());
+        } else {
+            html5Player.src = url;
+            html5Player.play();
+        }
     }
 }
 
