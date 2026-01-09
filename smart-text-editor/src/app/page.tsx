@@ -33,6 +33,30 @@ export default function Home() {
 
           <Upload onImageSelect={setFile} />
 
+          {/* DEBUG: Test Image Button */}
+          <button
+            onClick={async () => {
+              const canvas = document.createElement('canvas');
+              canvas.width = 400;
+              canvas.height = 200;
+              const ctx = canvas.getContext('2d');
+              if (ctx) {
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, 400, 200);
+                ctx.fillStyle = 'black';
+                ctx.font = '30px Arial';
+                ctx.fillText('Debug Text', 50, 100);
+              }
+              const blob = await new Promise<Blob | null>(r => canvas.toBlob(r));
+              if (blob) {
+                setFile(new File([blob], "debug.png", { type: "image/png" }));
+              }
+            }}
+            className="mt-4 px-4 py-2 bg-red-600/10 text-red-600 hover:bg-red-600/20 rounded-md text-xs font-semibold"
+          >
+            Debug: Load Test Image
+          </button>
+
           <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-3 text-center">
             <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Upload</h3>

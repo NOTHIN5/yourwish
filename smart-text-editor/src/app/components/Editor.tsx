@@ -41,7 +41,13 @@ export function Editor({ file, onBack }: EditorProps) {
         console.log = (...args) => {
             // Simplified logging to avoid circular JSON failures
             const msg = args.map(a => {
-                if (typeof a === 'object') return '[obj]';
+                if (typeof a === 'object') {
+                    try {
+                        return JSON.stringify(a).substring(0, 100);
+                    } catch {
+                        return '[Circ Obj]';
+                    }
+                }
                 return String(a);
             }).join(' ');
             addLog(`LOG: ${msg}`);
