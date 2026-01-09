@@ -221,22 +221,24 @@ export function Editor({ file, onBack }: EditorProps) {
             // Run OCR
             setIsProcessing(true);
 
-            // MOCK OCR FOR DEBUGGING
+            // MOCK OCR FOR DEBUGGING (DISABLED FOR FINAL TEST)
+            /*
             if (file.name === 'debug.png') {
                 addLog("DEBUG MODE: Mocking OCR result...");
                 await new Promise(r => setTimeout(r, 1000)); // Simulate delay
-
+                
                 const mockWords = [{
                     text: 'Debug',
                     confidence: 90,
                     bbox: { x0: 50, y0: 80, x1: 200, y1: 100 } // Approx matches canvas draw 'Debug Text' at 50,100
                 }];
-
+                
                 addLog(`OCR Finished (Mock). Words found: ${mockWords.length}`);
                 processWords(mockWords, scale);
                 setIsProcessing(false);
                 return;
             }
+            */
 
             try {
                 addLog("Starting OCR with createWorker...");
