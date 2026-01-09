@@ -132,10 +132,21 @@ export function Editor({ file, onBack }: EditorProps) {
                 words.forEach((word: any) => {
                     if (word.confidence < 50) return;
 
-                    const left = word.bbox.x0 * scale;
-                    const top = word.bbox.y0 * scale;
-                    const width = (word.bbox.x1 - word.bbox.x0) * scale;
-                    const height = (word.bbox.y1 - word.bbox.y0) * scale;
+                    const baseLeft = word.bbox.x0 * scale;
+                    const baseTop = word.bbox.y0 * scale;
+                    const baseWidth = (word.bbox.x1 - word.bbox.x0) * scale;
+                    const baseHeight = (word.bbox.y1 - word.bbox.y0) * scale;
+
+                    // HIT AREA REFINEMENT:
+                    // Increase the clickable area by adding padding.
+                    // Also ensure a minimum size (e.g. 20px) so small text is clickable.
+                    const PADDING = 5;
+                    const MIN_DIM = 24;
+
+                    const width = Math.max(baseWidth + (PADDING * 2), MIN_DIM);
+                    const height = Math.max(baseHeight + (PADDING * 2), MIN_DIM);
+                    const left = baseLeft - ((width - baseWidth) / 2);
+                    const top = baseTop - ((height - baseHeight) / 2);
 
                     // Create an invisible interaction box over the word
                     const box = new fabric.Rect({
@@ -371,11 +382,6 @@ export function Editor({ file, onBack }: EditorProps) {
             {selectedText && (
                 <Toolbar properties={textProps} onChange={handlePropertyChange} />
             )}
-
-            {/* DEBUG OVERLAY */}
-            <div className="fixed bottom-0 left-0 right-0 h-40 bg-black/90 text-green-400 p-2 font-mono text-xs overflow-y-auto z-[100] opacity-90 pointer-events-none">
-                {debugLogs.map((l, i) => <div key={i} className="whitespace-pre-wrap border-b border-gray-800">{l}</div>)}
-            </div>
         </div>
     );
 }
