@@ -25,6 +25,48 @@ export function Editor({ file, onBack }: EditorProps) {
         fontStyle: "normal",
     });
 
+    // --- DEBUG LOGGING ---
+    const [debugLogs, setDebugLogs] = useState<string[]>([]);
+    const logRef = useRef<string[]>([]);
+
+    useEffect(() => {
+        const addLog = (msg: string) => {
+            logRef.current = [...logRef.current, msg].slice(-20); // Keep last 20
+            setDebugLogs([...logRef.current]);
+        };
+
+        const originalLog = console.log;
+        const originalError = console.error;
+
+        console.log = (...args) => {
+            // Simplified logging to avoid circular JSON failures
+            const msg = args.map(a => {
+                if (typeof a === 'object') return '[obj]';
+                return String(a);
+            }).join(' ');
+            addLog(`LOG: ${msg}`);
+            originalLog.apply(console, args);
+        };
+
+        console.error = (...args) => {
+            const msg = args.join(' ');
+            addLog(`ERR: ${msg}`);
+            originalError.apply(console, args);
+        };
+
+        window.onerror = (msg) => {
+            const m = typeof msg === 'string' ? msg : 'Unknown Error';
+            addLog(`WIN ERR: ${m}`);
+        };
+
+        addLog("Debug Console Initialized");
+        return () => {
+            console.log = originalLog;
+            console.error = originalError;
+        }
+    }, []);
+    // ---------------------
+
     // Initialize Canvas
     useEffect(() => {
         if (!canvasRef.current) return;
@@ -281,6 +323,11 @@ export function Editor({ file, onBack }: EditorProps) {
             {selectedText && (
                 <Toolbar properties={textProps} onChange={handlePropertyChange} />
             )}
+
+            {/* DEBUG OVERLAY */}
+            <div className="fixed bottom-0 left-0 right-0 h-40 bg-black/90 text-green-400 p-2 font-mono text-xs overflow-y-auto z-[100] opacity-90 pointer-events-none">
+                {debugLogs.map((l, i) => <div key={i} className="whitespace-pre-wrap border-b border-gray-800">{l}</div>)}
+            </div>
         </div>
     );
 }
