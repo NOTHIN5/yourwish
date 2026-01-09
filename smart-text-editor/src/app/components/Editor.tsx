@@ -65,6 +65,10 @@ export function Editor({ file, onBack }: EditorProps) {
             addLog(`WIN ERR: ${m}`);
         };
 
+        window.onunhandledrejection = (e) => {
+            addLog(`UNHANDLED PROMISE: ${e.reason}`);
+        }
+
         addLog("Debug Console Initialized");
         return () => {
             console.log = originalLog;
@@ -131,6 +135,14 @@ export function Editor({ file, onBack }: EditorProps) {
                 'eng',
                 { logger: m => console.log(m) }
             ).then((result: any) => {
+                addLog(`OCR Promise Resolved. Keys: ${Object.keys(result || {}).join(',')}`);
+
+                if (!result || !result.data) {
+                    addLog("OCR Failed: No data in result");
+                    setIsProcessing(false);
+                    return;
+                }
+
                 const words = result.data.words;
                 setIsProcessing(false);
                 addLog(`OCR Finished. Words found: ${words ? words.length : 'null'}`);
@@ -231,6 +243,10 @@ export function Editor({ file, onBack }: EditorProps) {
 
                     canvas.add(box);
                 });
+            }).catch(err => {
+                addLog(`OCR ERROR: ${err}`);
+                console.error(err);
+                setIsProcessing(false);
             });
         });
 
