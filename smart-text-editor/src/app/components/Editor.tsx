@@ -199,12 +199,19 @@ export function Editor({ file, onBack }: EditorProps) {
                         // Remove the trigger box so it doesn't interfere
                         canvas.remove(box);
 
-                        // Focus and Select all text
+                        // CRITICAL FIX: Force focus sequence for mobile/desktop
+                        canvas.renderAll();
                         iText.enterEditing();
                         iText.selectAll();
 
+                        // Force browser focus to the hidden textarea Fabric creates
+                        if (iText.hiddenTextarea) {
+                            iText.hiddenTextarea.focus();
+                        }
+
                         setSelectedText(iText);
                         canvas.requestRenderAll();
+                        addLog("Editing: " + word.text);
                     });
 
                     canvas.add(box);
