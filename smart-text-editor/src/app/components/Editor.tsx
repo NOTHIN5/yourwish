@@ -29,12 +29,12 @@ export function Editor({ file, onBack }: EditorProps) {
     const [debugLogs, setDebugLogs] = useState<string[]>([]);
     const logRef = useRef<string[]>([]);
 
-    useEffect(() => {
-        const addLog = (msg: string) => {
-            logRef.current = [...logRef.current, msg].slice(-20); // Keep last 20
-            setDebugLogs([...logRef.current]);
-        };
+    const addLog = (msg: string) => {
+        logRef.current = [...logRef.current, msg].slice(-20); // Keep last 20
+        setDebugLogs([...logRef.current]);
+    };
 
+    useEffect(() => {
         const originalLog = console.log;
         const originalError = console.error;
 
@@ -133,6 +133,7 @@ export function Editor({ file, onBack }: EditorProps) {
             ).then((result: any) => {
                 const words = result.data.words;
                 setIsProcessing(false);
+                addLog(`OCR Finished. Words found: ${words ? words.length : 'null'}`);
 
                 if (!words) {
                     setIsProcessing(false);
@@ -147,6 +148,8 @@ export function Editor({ file, onBack }: EditorProps) {
                     const top = word.bbox.y0 * scale;
                     const width = (word.bbox.x1 - word.bbox.x0) * scale;
                     const height = (word.bbox.y1 - word.bbox.y0) * scale;
+
+                    addLog(`Word: "${word.text}" at (${Math.round(left)},${Math.round(top)}) ${Math.round(width)}x${Math.round(height)}`);
 
                     // Create an invisible interaction box over the word
                     const box = new fabric.Rect({
