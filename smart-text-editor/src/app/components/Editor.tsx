@@ -107,21 +107,19 @@ export function Editor({ file, onBack }: EditorProps) {
         fabric.Image.fromURL(imageUrl, async (img) => {
             if (!img || !canvasRef.current) return;
 
-            // Max dimensions
+            // Dimensions and Scaling
             const maxWidth = window.innerWidth * 0.9;
             const maxHeight = window.innerHeight * 0.8;
-
-            // Scaling logic
             const scale = Math.min(
                 maxWidth / (img.width || 1),
                 maxHeight / (img.height || 1),
-                1 // Don't scale up up
+                1
             );
 
             img.set({
                 scaleX: scale,
                 scaleY: scale,
-                selectable: false, // Background image shouldn't be movable
+                selectable: false,
                 evented: false,
             });
 
@@ -129,8 +127,110 @@ export function Editor({ file, onBack }: EditorProps) {
             canvas.setHeight((img.height || 0) * scale);
             canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
 
+            // Helper to process words
+            const processWords = (words: any[], scale: number) => {
+                words.forEach((word: any) => {
+                    if (word.confidence < 50) return;
+
+                    const left = word.bbox.x0 * scale;
+                    const top = word.bbox.y0 * scale;
+                    const width = (word.bbox.x1 - word.bbox.x0) * scale;
+                    const height = (word.bbox.y1 - word.bbox.y0) * scale;
+
+                    // Create an invisible interaction box over the word
+                    const box = new fabric.Rect({
+                        left,
+                        top,
+                        width,
+                        height,
+                        fill: 'transparent',
+                        hoverCursor: 'pointer',
+                        selectable: false, // Not movable
+                        data: {
+                            type: 'word-trigger',
+                            text: word.text,
+                            originalBbox: word.bbox
+                        } as any // Custom data
+                    });
+
+                    // Mouse styling
+                    box.on('mouseover', () => {
+                        box.set('stroke', 'rgba(59, 130, 246, 0.5)'); // Blue border
+                        box.set('strokeWidth', 2);
+                        canvas.requestRenderAll();
+                    });
+
+                    box.on('mouseout', () => {
+                        box.set('stroke', 'transparent');
+                        canvas.requestRenderAll();
+                    });
+
+                    // On Click: Erase and Replace
+                    box.on('mousedown', () => {
+                        const ctx = canvas.getContext();
+                        const pixel = ctx.getImageData(left * window.devicePixelRatio, top * window.devicePixelRatio, 1, 1).data;
+                        const bgColor = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
+
+                        // Create a "patch" to hide original text
+                        const patch = new fabric.Rect({
+                            left,
+                            top,
+                            width: width + 2, // Slight overlap
+                            height: height + 2,
+                            fill: bgColor, // Use sampled color
+                            selectable: false,
+                            evented: false,
+                        });
+                        canvas.add(patch);
+
+                        // Add Editable Text
+                        const iText = new fabric.IText(word.text, {
+                            left,
+                            top,
+                            fontSize: height * 0.8, // Approx size
+                            fontFamily: 'Arial',
+                            fill: 'black', // Default text color
+                            selectable: true,
+                        });
+
+                        canvas.add(iText);
+                        canvas.setActiveObject(iText);
+
+                        // Remove the trigger box so it doesn't interfere
+                        canvas.remove(box);
+
+                        // Focus and Select all text
+                        iText.enterEditing();
+                        iText.selectAll();
+
+                        setSelectedText(iText);
+                        canvas.requestRenderAll();
+                    });
+
+                    canvas.add(box);
+                });
+            };
+
             // Run OCR
             setIsProcessing(true);
+
+            // MOCK OCR FOR DEBUGGING
+            if (file.name === 'debug.png') {
+                addLog("DEBUG MODE: Mocking OCR result...");
+                await new Promise(r => setTimeout(r, 1000)); // Simulate delay
+
+                const mockWords = [{
+                    text: 'Debug',
+                    confidence: 90,
+                    bbox: { x0: 50, y0: 80, x1: 200, y1: 100 } // Approx matches canvas draw 'Debug Text' at 50,100
+                }];
+
+                addLog(`OCR Finished (Mock). Words found: ${mockWords.length}`);
+                processWords(mockWords, scale);
+                setIsProcessing(false);
+                return;
+            }
+
             try {
                 addLog("Starting OCR with createWorker...");
 
@@ -149,87 +249,7 @@ export function Editor({ file, onBack }: EditorProps) {
                 addLog(`Found ${words ? words.length : 0} words.`);
 
                 if (words) {
-                    words.forEach((word: any) => {
-                        if (word.confidence < 50) return; // Filter bad results
-
-                        // Tesseract bbox: x0, y0, x1, y1
-                        const left = word.bbox.x0 * scale;
-                        const top = word.bbox.y0 * scale;
-                        const width = (word.bbox.x1 - word.bbox.x0) * scale;
-                        const height = (word.bbox.y1 - word.bbox.y0) * scale;
-
-                        // Create an invisible interaction box over the word
-                        const box = new fabric.Rect({
-                            left,
-                            top,
-                            width,
-                            height,
-                            fill: 'transparent',
-                            hoverCursor: 'pointer',
-                            selectable: false, // Not movable
-                            data: {
-                                type: 'word-trigger',
-                                text: word.text,
-                                originalBbox: word.bbox
-                            } as any // Custom data
-                        });
-
-                        // Mouse styling
-                        box.on('mouseover', () => {
-                            box.set('stroke', 'rgba(59, 130, 246, 0.5)'); // Blue border
-                            box.set('strokeWidth', 2);
-                            canvas.requestRenderAll();
-                        });
-
-                        box.on('mouseout', () => {
-                            box.set('stroke', 'transparent');
-                            canvas.requestRenderAll();
-                        });
-
-                        // On Click: Erase and Replace
-                        box.on('mousedown', () => {
-                            const ctx = canvas.getContext();
-                            const pixel = ctx.getImageData(left * window.devicePixelRatio, top * window.devicePixelRatio, 1, 1).data;
-                            const bgColor = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
-
-                            // Create a "patch" to hide original text
-                            const patch = new fabric.Rect({
-                                left,
-                                top,
-                                width: width + 2, // Slight overlap
-                                height: height + 2,
-                                fill: bgColor, // Use sampled color
-                                selectable: false,
-                                evented: false,
-                            });
-                            canvas.add(patch);
-
-                            // Add Editable Text
-                            const iText = new fabric.IText(word.text, {
-                                left,
-                                top,
-                                fontSize: height * 0.8, // Approx size
-                                fontFamily: 'Arial',
-                                fill: 'black', // Default text color
-                                selectable: true,
-                            });
-
-                            canvas.add(iText);
-                            canvas.setActiveObject(iText);
-
-                            // Remove the trigger box so it doesn't interfere
-                            canvas.remove(box);
-
-                            // Focus and Select all text
-                            iText.enterEditing();
-                            iText.selectAll();
-
-                            setSelectedText(iText);
-                            canvas.requestRenderAll();
-                        });
-
-                        canvas.add(box);
-                    });
+                    processWords(words, scale);
                 }
             } catch (err: any) {
                 addLog(`OCR FATAL ERROR: ${err.message || err}`);
