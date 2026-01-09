@@ -234,10 +234,12 @@ export function Editor({ file, onBack }: EditorProps) {
             try {
                 addLog("Starting OCR with createWorker...");
 
-                // Explicitly create worker
+                // Explicitly create worker with local files
                 worker = await Tesseract.createWorker('eng', 1, {
                     logger: m => console.log(m),
-                    errorHandler: e => addLog(`Worker Error: ${e}`)
+                    errorHandler: e => addLog(`Worker Error: ${e}`),
+                    workerPath: '/start-text-editor/tesseract/worker.min.js',
+                    corePath: '/start-text-editor/tesseract/tesseract-core.wasm.js',
                 });
 
                 addLog("Worker created. Recognizing...");
