@@ -4,255 +4,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HyperDev | Building the Future</title>
+    <title>HyperDev | Kawaii Codes</title>
     <link rel="icon" type="image/png" href="favicon.png">
-    <meta name="description" content="HyperDev - A modern showcase of innovative digital projects and applications.">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@300;500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;600&family=Nunito:wght@400;700&display=swap"
         rel="stylesheet">
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
 
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- GSAP for UI animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <!-- Dynamic Background -->
-    <div class="bg-gradient"></div>
-    <div class="bg-orb orb-1"></div>
-    <div class="bg-orb orb-2"></div>
-    <div class="grid-overlay"></div>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader-content">
+            <div class="cute-spinner">🌸</div>
+            <p>Summoning Magic...</p>
+        </div>
+    </div>
 
     <!-- Navigation -->
-    <nav class="glass-nav">
-        <a href="#" class="logo">
-            <img src="favicon.png" alt="HyperDev Logo" class="nav-logo-img">
-            <span>Hyper<span class="highlight">Dev</span></span>
-        </a>
-        <div class="nav-links">
-            <a href="#about">About</a>
-            <a href="#projects">Work</a>
-            <a href="#services">Services</a>
-            <a href="#contact">Contact</a>
+    <nav class="anime-nav">
+        <div class="logo-container">
+            <div class="logo-icon">✨</div>
+            <span>HyperDev</span>
         </div>
-        <div class="social-links">
-            <a href="https://github.com/NOTHIN5" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <div class="nav-links">
+            <a href="#home" class="nav-pill active">Home</a>
+            <a href="#projects" class="nav-pill">Projects</a>
+            <a href="#about" class="nav-pill">About</a>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-content">
-                <div class="status-badge"><span class="pulsing-dot"></span> Available for Hire</div>
-                <h1 class="main-title">Crafting <br><span class="gradient-text">Digital Experiences</span></h1>
-                <p class="hero-subtitle">Exploring the intersection of code, creativity, and innovation.</p>
-                <div class="hero-cta-group">
-                    <a href="#projects" class="cta-button primary">View Projects <i class="fas fa-arrow-right"></i></a>
-                    <a href="#contact" class="cta-button secondary">Contact Me</a>
-                </div>
-            </div>
-            <div class="hero-visual">
-                <div class="code-card tilt-card">
-                    <div class="code-header">
-                        <span class="dot red"></span>
-                        <span class="dot yellow"></span>
-                        <span class="dot green"></span>
-                    </div>
-                    <div class="code-body">
-                        <pre><code><span class="k">const</span> <span class="v">future</span> <span class="o">=</span> <span class="k">await</span> <span class="f">build</span>({
-  <span class="p">vision</span>: <span class="s">"limitless"</span>,
-  <span class="p">stack</span>: [<span class="s">"AI"</span>, <span class="s">"Web"</span>, <span class="s">"Mobile"</span>],
-  <span class="p">status</span>: <span class="s">"ready"</span>
-});</code></pre>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <!-- Background Elements -->
+    <div class="background-container">
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+    </div>
 
-        <!-- About Section -->
-        <section id="about" class="about-section">
-            <div class="section-container">
-                <div class="about-content">
-                    <h2 class="section-title">Who <span class="highlight">We Are</span></h2>
-                    <p class="section-desc">HyperDev is a digital studio focused on pushing the boundaries of what's
-                        possible on the web. We build performant, beautiful, and interactive applications that solve
-                        real-world problems.</p>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <span class="stat-number">10+</span>
-                            <span class="stat-label">Projects</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number">100%</span>
-                            <span class="stat-label">Commitment</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number">24/7</span>
-                            <span class="stat-label">Innovation</span>
-                        </div>
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="hero-text">
+            <h1 class="bounce-text">Welcome to <br><span class="highlight">HyperDev!</span></h1>
+            <p class="subtitle">Where code meets kawaii magic ✨</p>
+            <div class="cta-container">
+                <button class="cute-btn primary">Explore <i class="fas fa-magic"></i></button>
+            </div>
+        </div>
+        <div class="hero-canvas-container" id="canvas-container">
+            <!-- Three.js Canvas will be injected here -->
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down bounce"></i>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects-section">
+        <div class="section-header">
+            <h2><span class="decoration">★</span> Projects <span class="decoration">★</span></h2>
+            <p>Magical creations from our lab</p>
+        </div>
+
+        <div class="cards-grid">
+            <!-- SyncWatch -->
+            <a href="./SyncWatch/" class="anime-card">
+                <div class="card-image gradient-1">
+                    <i class="fas fa-film"></i>
+                </div>
+                <div class="card-content">
+                    <h3>SyncWatch</h3>
+                    <p>Watch together!</p>
+                    <div class="tags">
+                        <span>Streaming</span>
+                        <span>Fun</span>
                     </div>
                 </div>
-            </div>
-        </section>
+            </a>
 
-        <!-- Services Section -->
-        <section id="services" class="services-section">
-            <div class="section-container">
-                <div class="section-header center">
-                    <h2>Our <span class="highlight">Expertise</span></h2>
-                    <p>Comprehensive digital solutions tailored to your needs.</p>
+            <!-- Chapri Calculator -->
+            <a href="./chapri-calculator/" class="anime-card">
+                <div class="card-image gradient-2">
+                    <i class="fas fa-calculator"></i>
                 </div>
-                <div class="services-grid">
-                    <div class="service-card tilt-card">
-                        <div class="service-icon"><i class="fas fa-code"></i></div>
-                        <h3>Web Development</h3>
-                        <p>Modern, responsive websites built with the latest technologies like React, Next.js, and
-                            Tailwind.</p>
-                    </div>
-                    <div class="service-card tilt-card">
-                        <div class="service-icon"><i class="fas fa-robot"></i></div>
-                        <h3>AI Integration</h3>
-                        <p>Smart solutions leveraging Artificial Intelligence to automate tasks and enhance user
-                            experiences.</p>
-                    </div>
-                    <div class="service-card tilt-card">
-                        <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
-                        <h3>App Development</h3>
-                        <p>Native and cross-platform mobile applications designed for performance and usability.</p>
+                <div class="card-content">
+                    <h3>Chapri Calc</h3>
+                    <p>Sassy math time!</p>
+                    <div class="tags">
+                        <span>Quiz</span>
+                        <span>Humor</span>
                     </div>
                 </div>
-            </div>
-        </section>
+            </a>
 
-        <!-- Projects Grid -->
-        <section id="projects" class="projects-container">
-            <div class="section-header">
-                <h2>Featured Projects</h2>
-                <div class="line"></div>
-            </div>
-
-            <div class="project-grid">
-                <!-- Project 1: SyncWatch -->
-                <a href="./SyncWatch/" class="project-card tilt-card">
-                    <div class="card-glow"></div>
-                    <div class="card-content">
-                        <div class="project-icon"><i class="fas fa-film"></i></div>
-                        <h3>SyncWatch</h3>
-                        <p>Watch videos together with friends in perfect synchronization.</p>
-                        <div class="tags">
-                            <span class="tag">Streaming</span>
-                            <span class="tag">Real-time</span>
-                        </div>
-                        <div class="arrow-icon"><i class="fas fa-external-link-alt"></i></div>
+            <!-- Smart Text Editor -->
+            <a href="./smart-text-editor/" class="anime-card">
+                <div class="card-image gradient-3">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <div class="card-content">
+                    <h3>Smart Editor</h3>
+                    <p>Write with power!</p>
+                    <div class="tags">
+                        <span>Tools</span>
+                        <span>Clean</span>
                     </div>
-                </a>
+                </div>
+            </a>
 
-                <!-- Project 2: Chapri Calculator -->
-                <a href="./chapri-calculator/" class="project-card tilt-card">
-                    <div class="card-glow"></div>
-                    <div class="card-content">
-                        <div class="project-icon"><i class="fas fa-calculator"></i></div>
-                        <h3>Chapri Calculator</h3>
-                        <p>A fun, interactive quiz application with personality.</p>
-                        <div class="tags">
-                            <span class="tag">Interactive</span>
-                            <span class="tag">Fun</span>
-                        </div>
-                        <div class="arrow-icon"><i class="fas fa-external-link-alt"></i></div>
-                    </div>
-                </a>
-
-                <!-- Project 3: Smart Text Editor -->
-                <a href="./smart-text-editor/" class="project-card tilt-card">
-                    <div class="card-glow"></div>
-                    <div class="card-content">
-                        <div class="project-icon"><i class="fas fa-edit"></i></div>
-                        <h3>Smart Editor</h3>
-                        <p>Advanced text editing with intelligent features and clean UI.</p>
-                        <div class="tags">
-                            <span class="tag">Productivity</span>
-                            <span class="tag">Tool</span>
-                        </div>
-                        <div class="arrow-icon"><i class="fas fa-external-link-alt"></i></div>
-                    </div>
-                </a>
-
-                <!-- Project 4: HyperClean (Placeholder) -->
-                <div class="project-card tilt-card coming-soon">
-                    <div class="card-glow"></div>
-                    <div class="card-content">
-                        <div class="project-icon"><i class="fas fa-mobile-alt"></i></div>
-                        <h3>HyperClean</h3>
-                        <p>Premium Android cleaner and storage manager.</p>
-                        <div class="tags">
-                            <span class="tag">Android</span>
-                            <span class="tag">Kotlin</span>
-                        </div>
-                        <div class="status">Development</div>
+            <!-- HyperClean -->
+            <div class="anime-card locked">
+                <div class="card-image gradient-4">
+                    <i class="fas fa-broom"></i>
+                </div>
+                <div class="card-content">
+                    <h3>HyperClean</h3>
+                    <p>Coming Soon...</p>
+                    <div class="tags">
+                        <span>Android</span>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Tech Stack Section -->
-        <section class="tech-stack-section">
-            <div class="section-container">
-                <div class="tech-marquee">
-                    <div class="tech-track">
-                        <i class="fab fa-react" title="React"></i>
-                        <i class="fab fa-js" title="JavaScript"></i>
-                        <i class="fab fa-python" title="Python"></i>
-                        <i class="fab fa-html5" title="HTML5"></i>
-                        <i class="fab fa-css3-alt" title="CSS3"></i>
-                        <i class="fab fa-node" title="Node.js"></i>
-                        <i class="fab fa-git-alt" title="Git"></i>
-                        <i class="fab fa-aws" title="AWS"></i>
-                        <!-- Duplicate for seamless loop -->
-                        <i class="fab fa-react" title="React"></i>
-                        <i class="fab fa-js" title="JavaScript"></i>
-                        <i class="fab fa-python" title="Python"></i>
-                        <i class="fab fa-html5" title="HTML5"></i>
-                        <i class="fab fa-css3-alt" title="CSS3"></i>
-                        <i class="fab fa-node" title="Node.js"></i>
-                        <i class="fab fa-git-alt" title="Git"></i>
-                        <i class="fab fa-aws" title="AWS"></i>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <!-- Footer -->
+    <footer class="anime-footer">
+        <div class="footer-decoration"></div>
+        <p>Made with <i class="fas fa-heart pulse"></i> by HyperDev</p>
+        <div class="socials">
+            <a href="https://github.com/NOTHIN5" class="social-bubble"><i class="fab fa-github"></i></a>
+        </div>
+    </footer>
 
-        <!-- Contact Section -->
-        <section id="contact" class="contact-section">
-            <div class="section-container">
-                <div class="contact-content">
-                    <h2>Ready to start your <br><span class="gradient-text">Next Project?</span></h2>
-                    <p>Let's turn your vision into reality. Reach out today.</p>
-                    <a href="mailto:contact@hyperdev.online" class="cta-button primary big">Get in Touch <i
-                            class="fas fa-envelope"></i></a>
-
-                    <div class="footer-socials">
-                        <a href="https://github.com/NOTHIN5" target="_blank"><i class="fab fa-github"></i></a>
-                        <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
-                        <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
-                    </div>
-                </div>
-            </div>
-        </section><!-- Footer -->
-        <footer>
-            <div class="footer-content">
-                <p>&copy; 2026 HyperDev. Crafted with <i class="fas fa-heart"></i></p>
-            </div>
-        </footer>
-
-        <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>

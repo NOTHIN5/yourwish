@@ -1,150 +1,183 @@
-// ==========================================
-// HYPERDEV - INTERACTIVE SCRIPT
-// ==========================================
+// Initialize GSAP ScrollTrigger
+gsap.registerPlugin(ScrollTrigger);
 
-document.addEventListener('DOMContentLoaded', () => {
+// Loading Screen
+window.addEventListener('load', () => {
+    const loader = document.getElementById('loading-screen');
+    setTimeout(() => {
+        loader.style.opacity = '0';
+        setTimeout(() => {
+            loader.style.display = 'none';
+        }, 500);
+    }, 1500);
 
-    // ===== 3D TILT EFFECT =====
-    const tiltCards = document.querySelectorAll('.tilt-card');
-
-    tiltCards.forEach(card => {
-        card.addEventListener('mousemove', handleTilt);
-        card.addEventListener('mouseleave', resetTilt);
-    });
-
-    function handleTilt(e) {
-        const card = this;
-        const cardRect = card.getBoundingClientRect();
-
-        // Calculate mouse position relative to card center
-        const x = e.clientX - cardRect.left;
-        const y = e.clientY - cardRect.top;
-
-        const centerX = cardRect.width / 2;
-        const centerY = cardRect.height / 2;
-
-        // Calculate rotation values (limit to +/- 5 degrees for subtler effect)
-        const rotateX = ((y - centerY) / centerY) * -5;
-        const rotateY = ((x - centerX) / centerX) * 5;
-
-        // Apply transformation
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-    }
-
-    function resetTilt() {
-        this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
-    }
-
-
-    // ===== SMOOTH SCROLLING =====
-    // Note: CSS scroll-behavior: smooth handles most cases, but this adds offset for fixed nav
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-
-            const targetElement = document.querySelector(targetId);
-
-            if (targetElement) {
-                const navHeight = document.querySelector('.glass-nav').offsetHeight;
-                const elementPosition = targetElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - navHeight - 20;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: "smooth"
-                });
-            }
-        });
-    });
-
-
-    // ===== NAVBAR SCROLL EFFECT =====
-    const nav = document.querySelector('.glass-nav');
-
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            nav.classList.add('scrolled');
-        } else {
-            nav.classList.remove('scrolled');
-        }
-    });
-
-
-    // ===== SCROLL REVEAL ANIMATIONS =====
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px"
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    // Elements to animate
-    const animateElements = [
-        '.section-title',
-        '.section-desc',
-        '.service-card',
-        '.project-card',
-        '.stat-item',
-        '.contact-content'
-    ];
-
-    animateElements.forEach(selector => {
-        document.querySelectorAll(selector).forEach((el, index) => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-
-            // Stagger effect based on index if it's a grid item/card
-            // We reset index for different groups if we could, but global index is ok for now 
-            // or we can select per group. let's keep it simple.
-            if (el.classList.contains('service-card') || el.classList.contains('project-card') || el.classList.contains('stat-item')) {
-                // Simple modulo to create stagger within rows
-                el.style.transitionDelay = `${(index % 3) * 100}ms`;
-            }
-
-            observer.observe(el);
-            el.classList.add('reveal-el');
-        });
-    });
-
-    // Style injection for reveal class
-    const style = document.createElement('style');
-    style.innerHTML = `
-        .reveal-el.visible {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-        }
-        
-        /* Fix interaction between reveal and tilt hover */
-        .reveal-el.visible:hover {
-            transform: translateY(-5px) !important;
-        }
-        
-        /* Specific fix for tilt cards to allow rotation after reveal */
-        .tilt-card.reveal-el.visible:hover {
-             /* The JS tilt effect sets inline styles which override this, 
-                so we don't need !important on transform here, 
-                but we need to reset the transition to allow fast tilt response */
-             transition: transform 0.1s ease-out !important;
-        }
-    `;
-    document.head.appendChild(style);
-
-
-    // ===== CONSOLE WELCOME =====
-    console.log(
-        "%c HyperDev %c Ready to Build ",
-        "background: #6366f1; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold;",
-        "color: #94a3b8; font-family: sans-serif;"
-    );
+    initThreeJS();
 });
+
+// Three.js Logic
+function initThreeJS() {
+    const container = document.getElementById('canvas-container');
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
+    // Scene
+    const scene = new THREE.Scene();
+
+    // Camera
+    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+    camera.position.z = 5;
+
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    container.appendChild(renderer.domElement);
+
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+    directionalLight.position.set(5, 10, 7);
+    scene.add(directionalLight);
+
+    const pointLight = new THREE.PointLight(0xff9a9e, 1, 100);
+    pointLight.position.set(-5, 5, 5);
+    scene.add(pointLight);
+
+    // Character Group
+    const characterGroup = new THREE.Group();
+    scene.add(characterGroup);
+
+    // --- Create Cute Character (Procedural) ---
+    // Materials
+    const bodyMat = new THREE.MeshPhysicalMaterial({
+        color: 0xffffff,
+        roughness: 0.2,
+        metalness: 0.1,
+        transparent: true,
+        opacity: 0.9,
+        transmission: 0.2, // Glass-like
+        clearcoat: 1.0,
+    });
+
+    const eyeMat = new THREE.MeshBasicMaterial({ color: 0x333333 });
+    const blushMat = new THREE.MeshBasicMaterial({ color: 0xff9a9e });
+
+    // Body (Sphere)
+    const bodyGeo = new THREE.SphereGeometry(1.5, 32, 32);
+    const body = new THREE.Mesh(bodyGeo, bodyMat);
+    characterGroup.add(body);
+
+    // Eyes
+    const eyeGeo = new THREE.SphereGeometry(0.15, 32, 32);
+
+    const leftEye = new THREE.Mesh(eyeGeo, eyeMat);
+    leftEye.position.set(-0.5, 0.3, 1.3);
+    characterGroup.add(leftEye);
+
+    const rightEye = new THREE.Mesh(eyeGeo, eyeMat);
+    rightEye.position.set(0.5, 0.3, 1.3);
+    characterGroup.add(rightEye);
+
+    // Blushes
+    const blushGeo = new THREE.CircleGeometry(0.2, 32);
+
+    const leftBlush = new THREE.Mesh(blushGeo, blushMat);
+    leftBlush.position.set(-0.8, 0.1, 1.25);
+    leftBlush.rotation.y = -0.5;
+    characterGroup.add(leftBlush);
+
+    const rightBlush = new THREE.Mesh(blushGeo, blushMat);
+    rightBlush.position.set(0.8, 0.1, 1.25);
+    rightBlush.rotation.y = 0.5;
+    characterGroup.add(rightBlush);
+
+    // Floating Particles
+    const particlesGeo = new THREE.BufferGeometry();
+    const particlesCount = 50;
+    const posArray = new Float32Array(particlesCount * 3);
+
+    for (let i = 0; i < particlesCount * 3; i++) {
+        posArray[i] = (Math.random() - 0.5) * 10;
+    }
+
+    particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    const particlesMat = new THREE.PointsMaterial({
+        size: 0.05,
+        color: 0xff9a9e,
+        transparent: true,
+        opacity: 0.8
+    });
+
+    const particlesMesh = new THREE.Points(particlesGeo, particlesMat);
+    scene.add(particlesMesh);
+
+
+    // Mouse Interaction
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetX = 0;
+    let targetY = 0;
+
+    const windowHalfX = width / 2;
+    const windowHalfY = height / 2;
+
+    document.addEventListener('mousemove', (event) => {
+        mouseX = (event.clientX - windowHalfX);
+        mouseY = (event.clientY - windowHalfY);
+    });
+
+    // Handle Resize
+    window.addEventListener('resize', () => {
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+    });
+
+    // Animation Loop
+    const clock = new THREE.Clock();
+
+    function animate() {
+        requestAnimationFrame(animate);
+        const elapsedTime = clock.getElapsedTime();
+
+        // Idle Animation (Bobbing)
+        characterGroup.position.y = Math.sin(elapsedTime * 2) * 0.1;
+
+        // Mouse Looking (Smooth)
+        targetX = mouseX * 0.001;
+        targetY = mouseY * 0.001;
+
+        characterGroup.rotation.y += 0.05 * (targetX - characterGroup.rotation.y);
+        characterGroup.rotation.x += 0.05 * (targetY - characterGroup.rotation.x);
+
+        // Particle Animation
+        particlesMesh.rotation.y = elapsedTime * 0.1;
+        particlesMesh.rotation.x = elapsedTime * 0.05;
+
+        renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // Click Interaction (Jump)
+    container.addEventListener('click', () => {
+        gsap.to(characterGroup.position, {
+            y: 1.0,
+            duration: 0.3,
+            yoyo: true,
+            repeat: 1,
+            ease: "power2.out"
+        });
+
+        // Happy spin
+        gsap.to(characterGroup.rotation, {
+            y: characterGroup.rotation.y + Math.PI * 2,
+            duration: 0.8,
+            ease: "back.out(1.7)"
+        });
+    });
+}
