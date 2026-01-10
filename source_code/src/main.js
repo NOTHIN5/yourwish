@@ -1,13 +1,29 @@
 import './style.css';
-import { SceneManager } from './World/Scene.js';
-import { HUD } from './UI/HUD.js';
 
-window.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('canvas-container');
-    const uiLayer = document.getElementById('ui-layer');
+// Simple interaction script
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('HyperDev Landing Page Loaded');
 
-    const sceneManager = new SceneManager(container);
-    sceneManager.start();
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
 
-    const hud = new HUD(uiLayer);
+    // Intersection Observer for fade-in animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.animate-on-scroll').forEach(el => {
+        observer.observe(el);
+    });
 });

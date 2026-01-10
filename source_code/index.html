@@ -4,45 +4,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HyperDev | Minecraft Hub</title>
+    <title>HyperDev | Innovative Solutions</title>
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <style>
-        body,
-        html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #000;
-        }
-
-        #canvas-container {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-
-        #ui-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .pointer-events-auto {
-            pointer-events: auto;
-        }
-    </style>
+    <!-- Preload fonts logic handled by CSS import -->
 </head>
 
 <body>
-    <div id="canvas-container"></div>
-    <div id="ui-layer">
-        <!-- UI Elements will be injected here -->
-    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container animate-on-scroll">
+            <h1>We Build the Future.</h1>
+            <p>HyperDev is a collective of developers crafting innovative digital experiences. From web apps to unique
+                utilities, we bring ideas to life.</p>
+            <a href="#projects" class="cta-button">View Our Work</a>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <div class="container">
+            <h2 class="animate-on-scroll">Featured Projects</h2>
+            <div class="projects-grid">
+
+                <!-- Project 1: SyncWatch -->
+                <article class="project-card animate-on-scroll">
+                    <h3>SyncWatch</h3>
+                    <p>Watch videos together with friends in real-time. Supports YouTube and various streaming platforms
+                        with synchronized playback.</p>
+                    <div class="project-tags">
+                        <span class="tag">WebSockets</span>
+                        <span class="tag">Real-time</span>
+                        <span class="tag">Video</span>
+                    </div>
+                    <a href="/SyncWatch/" class="project-link">Launch App &rarr;</a>
+                </article>
+
+                <!-- Project 2: Chapri Calculator -->
+                <article class="project-card animate-on-scroll">
+                    <h3>Chapri Calculator</h3>
+                    <p>A fun, unique calculator with a distinct personality. More than just math—it's an experience.</p>
+                    <div class="project-tags">
+                        <span class="tag">Tool</span>
+                        <span class="tag">Fun</span>
+                        <span class="tag">Utility</span>
+                    </div>
+                    <a href="/chapri-calculator/" class="project-link">Try It Out &rarr;</a>
+                </article>
+
+                <!-- Project 3: Smart Text Editor -->
+                <article class="project-card animate-on-scroll">
+                    <h3>Smart Text Editor</h3>
+                    <p>An intelligent text editing environment designed for productivity and ease of use.</p>
+                    <div class="project-tags">
+                        <span class="tag">Productivity</span>
+                        <span class="tag">Editor</span>
+                    </div>
+                    <a href="#" class="project-link">Coming Soon</a>
+                </article>
+
+                <!-- Project 4: HyperClean -->
+                <article class="project-card animate-on-scroll">
+                    <h3>HyperClean</h3>
+                    <p>Advanced Android cleaning utility with smart screenshot management and storage analytics.</p>
+                    <div class="project-tags">
+                        <span class="tag">Android</span>
+                        <span class="tag">Kotlin</span>
+                        <span class="tag">Utility</span>
+                    </div>
+                    <a href="#" class="project-link">Learn More &rarr;</a>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- About/Contact Section -->
+    <section id="contact" style="background-color: #0f1522;">
+        <div class="container animate-on-scroll">
+            <h2>Get In Touch</h2>
+            <p style="text-align: center; color: var(--text-secondary);">
+                Have a project in mind? We'd love to hear from you.
+            </p>
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="mailto:contact@hyperdev.online" class="cta-button">Contact Us</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 HyperDev. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#">GitHub</a>
+                <a href="#">Twitter</a>
+                <a href="#">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
     <script type="module" src="/src/main.js"></script>
 </body>
 
