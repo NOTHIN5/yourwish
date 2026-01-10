@@ -1,13 +1,13 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-    root: '.',
+    root: 'source_code',
     publicDir: 'public',
     base: './', // Relative base for GitHub Pages
     build: {
-        outDir: 'docs',
+        outDir: '../',
         assetsDir: 'assets',
-        emptyOutDir: true
+        emptyOutDir: false
     },
     server: {
         port: 3000,
