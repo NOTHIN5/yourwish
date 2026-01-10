@@ -18,21 +18,23 @@ interface ToolbarProps {
 }
 
 const FONTS = [
-    "Arial",
-    "Times New Roman",
-    "Courier New",
-    "Georgia",
-    "Verdana",
-    "Trebuchet MS",
-    "Impact",
-    "Comic Sans MS",
+    { label: "Arial", value: "Arial" },
+    { label: "Times New Roman", value: "Times New Roman" },
+    { label: "Courier New", value: "Courier New" },
+    { label: "Impact", value: "Impact" },
+    { label: "Handwriting (Caveat)", value: "var(--font-caveat), cursive" },
+    { label: "Handwriting (Patrick)", value: "var(--font-patrick-hand), cursive" },
+    { label: "Marker", value: "var(--font-permanent-marker), cursive" },
+    { label: "Modern (Oswald)", value: "var(--font-oswald), sans-serif" },
+    { label: "Elegant (Playfair)", value: "var(--font-playfair), serif" },
+    { label: "Mono (Geist)", value: "var(--font-geist-mono), monospace" },
 ];
 
 export function Toolbar({ properties, onChange, disabled }: ToolbarProps) {
     return (
         <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-white dark:bg-gray-800 shadow-xl border border-gray-200 dark:border-gray-700 rounded-xl p-4 flex items-center gap-4 z-50 transition-all duration-300">
             {/* Font Family */}
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 w-40">
                 <label className="text-xs font-medium text-gray-500 uppercase">Font</label>
                 <select
                     disabled={disabled}
@@ -41,8 +43,12 @@ export function Toolbar({ properties, onChange, disabled }: ToolbarProps) {
                     className="h-9 rounded-md border border-gray-300 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     {FONTS.map((font) => (
-                        <option key={font} value={font}>
-                            {font}
+                        <option
+                            key={font.value}
+                            value={font.value}
+                            style={{ fontFamily: font.value.includes('var') ? font.value : undefined }}
+                        >
+                            {font.label}
                         </option>
                     ))}
                 </select>

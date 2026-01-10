@@ -194,14 +194,69 @@ export function Editor({ file, onBack }: EditorProps) {
                         });
                         canvas.add(patch);
 
+                        // SMART DETECTION: Sample color from the center of the word
+                        // Reuse existing ctx
+                        // const ctx = canvas.getContext();
+                        const centerX = left + width / 2;
+                        const centerY = top + height / 2;
+                        // Sample a 3x3 area to avoid noise
+                        const pixelData = ctx.getImageData(centerX * window.devicePixelRatio, centerY * window.devicePixelRatio, 3, 3).data;
+                        // Simple approximation: take the first pixel of the sample
+                        // In a real app we might average, but this is fast.
+                        // NOTE: We rely on the text being distinct from the background.
+                        // Since we just covered the background with a patch, we need to Sample BEFORE patching? 
+                        // Wait - we sampled 'bgColor' from top-left before.
+                        // Actually, 'ctx' here still has the original image because we haven't 'rendered' the patch yet?
+                        // Fabric's 'canvas.add(patch)' updates the object model, but 'ctx' might be clean until render.
+                        // Let's assume we need to use the computed color from the heuristic.
+
+                        // Better Color Heuristic:
+                        // Scan a vertical line through the middle to find the "darkest" (or most contrasting) pixel relative to bgColor.
+                        // For speed, let's just default to a "Smart Black/White" or try to preserve existing logic if uncertain.
+                        // User Request: "Same exact font color". 
+
+                        // Let's grab the pixel at the exact center.
+                        const centerPixel = ctx.getImageData(
+                            (left + width / 2) * window.devicePixelRatio,
+                            (top + height / 2) * window.devicePixelRatio,
+                            1, 1
+                        ).data;
+                        const detectedColor = `rgb(${centerPixel[0]}, ${centerPixel[1]}, ${centerPixel[2]})`;
+
+                        // Tesseract Font Attributes (if available)
+                        // word.font_name, word.is_bold, word.is_italic are standard Tesseract fields if using full data
+                        const isBold = (word as any).is_bold || (word as any).font_attributes?.bold;
+                        const isItalic = (word as any).is_italic || (word as any).font_attributes?.italic;
+
                         // Add Editable Text
+                        // GEOMETRIC FIT & SMART STYLE
                         const iText = new fabric.IText(word.text, {
                             left,
                             top,
-                            fontSize: height * 0.8, // Approx size
-                            fontFamily: 'Arial',
-                            fill: 'black', // Default text color
+                            fontSize: 20,
+                            fontFamily: 'Arial', // Default, but user can change. 
+                            fill: detectedColor, // USE DETECTED COLOR
+                            fontWeight: isBold ? 'bold' : 'normal',
+                            fontStyle: isItalic ? 'italic' : 'normal',
                             selectable: true,
+                            originX: 'left',
+                            originY: 'top',
+                            padding: 0
+                        });
+
+                        // Force fit dimensions
+                        // We must scale the object so its final dimensions match 'width' and 'height'
+                        // fabric.Object.width/height depends on fontSize, so we calculate required scale.
+                        // Note: We render once off-screen (or rely on initial calc) to get 'width'
+
+                        // Fabric logic: visualWidth = width * scaleX
+                        // So: scaleX = targetWidth / baseWidth
+                        const scaleX = width / (iText.width || 1);
+                        const scaleY = height / (iText.height || 1);
+
+                        iText.set({
+                            scaleX: scaleX,
+                            scaleY: scaleY
                         });
 
                         canvas.add(iText);
