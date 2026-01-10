@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HyperDev | The Anime Realm</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bangers&family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="day-mode">
+    <!-- Sound Effects (Hidden) -->
+    <audio id="sfx-hover"
+        src="data:audio/wav;base64,UklGRjIAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YRAAAACAgICAgICAgICAgICAgICA"></audio>
+    <audio id="sfx-click"
+        src="data:audio/wav;base64,UklGRjIAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YRAAAACAgICAgICAgICAgICAgICA"></audio>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader-content">
+            <div class="magic-circle"></div>
+            <h2 class="glitch" data-text="LOADING WORLD...">LOADING WORLD...</h2>
+        </div>
+    </div>
+
+    <!-- UI Overlay Layer -->
+    <div id="ui-layer">
+        <!-- Top Nav -->
+        <nav class="persona-nav">
+            <div class="nav-skew-container">
+                <div class="nav-item active" data-target="#home">
+                    <span class="jp-text">ホーム</span>
+                    <span class="en-text">HOME</span>
+                </div>
+                <div class="nav-item" data-target="#projects">
+                    <span class="jp-text">プロジェクト</span>
+                    <span class="en-text">MISSIONS</span>
+                </div>
+                <div class="nav-item" data-target="#about">
+                    <span class="jp-text">私について</span>
+                    <span class="en-text">PROFILE</span>
+                </div>
+            </div>
+            <div class="date-widget">
+                <span id="current-time">12:00 PM</span>
+                <span class="weather-icon"><i class="fas fa-sun"></i></span>
+                <button id="theme-toggle" class="cycle-btn" aria-label="Toggle Day/Night">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Character Dialogue Box -->
+        <div class="dialogue-box hidden">
+            <div class="char-name">HyDev-Chan</div>
+            <div class="dialogue-text">Welcome to my digital world! Look around! ✨</div>
+            <div class="next-arrow">▼</div>
+        </div>
+
+        <!-- Social Corner -->
+        <div class="social-corner">
+            <a href="https://github.com/NOTHIN5" target="_blank" class="social-hex">
+                <i class="fab fa-github"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- 3D Canvas (Background) -->
+    <div id="canvas-container"></div>
+
+    <!-- Content Sections (Scrollable) -->
+    <main id="content-scroll">
+
+        <!-- Hero Section -->
+        <section id="home" class="scene-section">
+            <div class="hero-ui">
+                <h1 class="hero-title">
+                    <span class="outline-text">HYPER</span><br>
+                    <span class="filled-text">DEV</span>
+                </h1>
+                <div class="hero-kicker">LEVEL UP YOUR REALITY</div>
+                <button class="action-btn-large">START_GAME <i class="fas fa-play"></i></button>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="scene-section">
+            <div class="section-title-bar">
+                <h2>Active Missions</h2>
+                <div class="deco-line"></div>
+            </div>
+
+            <div class="mission-grid">
+                <!-- SyncWatch -->
+                <div class="mission-card" onclick="window.location.href='./SyncWatch/'">
+                    <div class="card-visual visual-1">
+                        <div class="rank-badge">S</div>
+                    </div>
+                    <div class="card-data">
+                        <h3>SYNC WATCH</h3>
+                        <p>Simultaneous Video Operations</p>
+                        <div class="stat-bars">
+                            <div class="bar-row"><span class="label">FUN</span>
+                                <div class="bar-fill" style="width: 90%;"></div>
+                            </div>
+                            <div class="bar-row"><span class="label">TECH</span>
+                                <div class="bar-fill" style="width: 80%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chapri Calculator -->
+                <div class="mission-card" onclick="window.location.href='./chapri-calculator/'">
+                    <div class="card-visual visual-2">
+                        <div class="rank-badge">A</div>
+                    </div>
+                    <div class="card-data">
+                        <h3>CHAPRI CALC</h3>
+                        <p>Personality Assessment Tool</p>
+                        <div class="stat-bars">
+                            <div class="bar-row"><span class="label">SASS</span>
+                                <div class="bar-fill" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Smart Text Editor -->
+                <div class="mission-card" onclick="window.location.href='./smart-text-editor/'">
+                    <div class="card-visual visual-3">
+                        <div class="rank-badge">B</div>
+                    </div>
+                    <div class="card-data">
+                        <h3>SMART EDITOR</h3>
+                        <p>Data Input Interface</p>
+                        <div class="stat-bars">
+                            <div class="bar-row"><span class="label">UTIL</span>
+                                <div class="bar-fill" style="width: 85%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HyperClean -->
+                <div class="mission-card locked">
+                    <div class="card-visual visual-4">
+                        <div class="lock-icon"><i class="fas fa-lock"></i></div>
+                    </div>
+                    <div class="card-data">
+                        <h3>HYPER CLEAN</h3>
+                        <p>System Optimization - LOCKED</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="cyber-footer">
+            <div class="footer-line"></div>
+            <p>SYSTEM STATUS: ONLINE // HYPERDEV 2026</p>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
